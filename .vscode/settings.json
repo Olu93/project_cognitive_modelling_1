@@ -1,0 +1,12 @@
+{
+    "r.bracketedPaste": true,
+    "r.rterm.option": [
+        "--no-save",
+        "--no-restore",
+        "--r-binary=C:\\Program Files\\Microsoft\\R Open\\R-4.0.2\\bin\\x64\\R.exe"
+    ],
+    "r.rterm.windows": "C:\\Users\\ohund\\Anaconda3\\Scripts\\radian.exe",
+    "r.lsp.debug": true,
+    "r.lsp.diagnostics": true,
+    "r.lsp.lang": "C:\\Program Files\\Microsoft\\R Open\\R-4.0.2\\bin\\x64\\R.exe"
+}
