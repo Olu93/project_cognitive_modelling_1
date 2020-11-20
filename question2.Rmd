@@ -1,0 +1,134 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(reshape2)
+library(ggplot2)
+library(gridExtra)
+```
+
+# Assignment 1
+
+```{r}
+se <- function(x) sd(x)/sqrt(length(x))
+tabledrift <- read.csv("tableOfDriftValuesCalibration.csv")
+tabledrift$trialTime = round(tabledrift$trialTime/1000, 2)
+tabledrift$trial = factor(tabledrift$trial)
+head(tabledrift)
+```
+
+
+### Question 2A
+
+```{r}
+its_time_to_drift = tabledrift %>% filter(trialTime>=15) %>% filter(trialTime<=18)
+head(its_time_to_drift)
+```
+```{r}
+mlegend = guide_legend(title="Trials")
+ggplot(its_time_to_drift, aes(trialTime, posX, colour=trial))+
+  geom_line() + 
+  guides(colour=mlegend) +
+  theme(legend.position="bottom") +
+  labs(x="Trial Time (sec)", y="Lateral Deviation (m)", title="Vehicle Lateral Deviation between 15 and 18 sec of driving")
+```
+
+Question 2B
+
+```{r}
+simulate_one_trial <- function(idx){
+  time_span = 3000
+  sample_steps = 0:49
+  num_samples = (time_span/length(sample_steps))
+  time_stamps = 1:num_samples * num_samples
+  drift_simulations = rnorm(time_span, 0, 0.13)
+  sample_drifts = drift_simulations[sample_steps %% length(sample_steps) == 0]
+  abs_drifts = cumsum(sample_drifts)
+  # na.fail(dim(time_stamps))
+  return(data.frame(cbind(trial =idx,  trialTime = time_stamps, posX = abs_drifts)))
+}
+n_trials = 1:50
+simulated_trials = do.call(rbind,lapply(n_trials, simulate_one_trial))
+simulated_trials$trialTime = simulated_trials$trialTime
+simulated_trials$trial = factor(simulated_trials$trial)
+ggplot(simulated_trials, aes(trialTime, posX, colour=trial))+
+  geom_line() + 
+  # guides(colour=NULL) +
+  theme(legend.position="none") +
+  labs(x="Trial Time (ms)", y="Lateral Deviation (m)", title="Vehicle Lateral Deviation (simulated N(0,0.13) for 3 seconds)")
+```
+
+Question 2C
+
+```{r}
+# install.packages("ggpubr")
+num_bins = 100
+ylimits = c(0, 200)
+
+p1 = ggplot(simulated_trials, aes(posX)) + 
+  geom_histogram(bins=num_bins, fill="red") +
+  # ylim(ylimits) +
+  labs(x="Lateral Position", y="Frequencies", title="Simulated")
+  
+p2 = ggplot(its_time_to_drift, aes(posX)) + 
+  geom_histogram(bins=num_bins, fill="blue") +
+  # ylim(ylimits) + 
+  labs(x="Lateral Position", y="Frequencies", title="Humans")
+
+
+grid.arrange(p2, p1, ncol=2)
+```
+
+Question 2E 
+
+```{r}
+simulate_one_trial <- function(idx){
+  time_span = 3000
+  sample_steps = 0:49
+  num_samples = (time_span/length(sample_steps))
+  time_stamps = 1:num_samples * num_samples
+  drift_simulations = rnorm(time_span, 0, 0.06)
+  sample_drifts = drift_simulations[sample_steps %% length(sample_steps) == 0]
+  abs_drifts = cumsum(sample_drifts)
+  # na.fail(dim(time_stamps))
+  return(data.frame(cbind(trial =idx,  trialTime = time_stamps, posX = abs_drifts)))
+}
+n_trials = 1:50
+simulated_trials = do.call(rbind,lapply(n_trials, simulate_one_trial))
+simulated_trials$trialTime = simulated_trials$trialTime
+simulated_trials$trial = factor(simulated_trials$trial)
+
+num_bins = 100
+ylimits = c(0, 200)
+
+p1 = ggplot(simulated_trials, aes(posX)) + 
+  geom_histogram(bins=num_bins, fill="red") +
+  # ylim(ylimits) +
+  labs(x="Lateral Position", y="Frequencies", title="Simulated")
+  
+p2 = ggplot(its_time_to_drift, aes(posX)) + 
+  geom_histogram(bins=num_bins, fill="blue") +
+  # ylim(ylimits) + 
+  labs(x="Lateral Position", y="Frequencies", title="Humans")
+grid.arrange(p2, p1, ncol=2)
+```
+
+
+```{r}
+sd(simulated_trials$posX)
+```
+
+```{r}
+ggplot(simulated_trials, aes(trialTime, posX, colour=trial))+
+  geom_line() + 
+  # guides(colour=NULL) +
+  theme(legend.position="none") +
+  labs(x="Trial Time (ms)", y="Lateral Deviation (m)", title="Vehicle Lateral Deviation (simulated N(0,0.06) for 3 seconds)")
+```
+
+
+

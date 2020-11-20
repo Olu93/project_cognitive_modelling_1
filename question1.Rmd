@@ -3,9 +3,7 @@ title: "R Notebook"
 output: html_notebook
 ---
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
-
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+# Assignment 1
 
 ```{r}
 library(dplyr)
@@ -14,14 +12,24 @@ library(reshape2)
 library(ggplot2)
 ```
 
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+<!-- Insert Chunk: *Ctrl+Alt+I* -->
+<!-- Knit-Preview: *Ctrl+Alt+K* -->
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+```{r}
+keyPressDataWithLaneDeviation = read.csv("./keyPressDataWithLaneDeviation.csv")
+head(keyPressDataWithLaneDeviation)
+# se <- function(x) {
+#   return(sqrt(var(x) / length(x)))
+# }
+se <- function(x) sd(x)/sqrt(length(x))
+```
 
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
+
+### Question 1A
 ```{r}
 subsetted_data <- subset(keyPressDataWithLaneDeviation, typingErrorMadeOnTrial == 0)
-subsetted_data <- subset(subsetted_data, phoneNrLengthBeforeKeyPress == 11)
+subsetted_data <- subsetted_data[subsetted_data$phoneNrLengthAfterKeyPress==11,]
 subsetted_data <- subset(subsetted_data, (partOfExperiment == "dualSteerFocus" | partOfExperiment == "dualDialFocus"))
 # subsetted_data = subset(subsetted_data, partOfExperiment == c("dualDialFocus", "dualSteerFocus"))
 head(subsetted_data)
@@ -29,68 +37,68 @@ head(subsetted_data)
 
 ```{r}
 aggregated_data <- aggregate(timeRelativeToTrialStart ~ pp + partOfExperiment, subsetted_data, FUN = mean)
-aggregated_data
+head(aggregated_data)
 ```
 ```{r}
 grand_mean <- aggregate(timeRelativeToTrialStart ~ partOfExperiment, aggregated_data, FUN = mean)
 grand_standard_deviation <- aggregate(timeRelativeToTrialStart ~ partOfExperiment, aggregated_data, FUN = sd)
-grand_standard_error <- aggregate(timeRelativeToTrialStart ~ partOfExperiment, aggregated_data, FUN = function(x) {
-  return(sqrt(var(x) / length(x)))
-})
+grand_standard_error <- aggregate(timeRelativeToTrialStart ~ partOfExperiment, aggregated_data, FUN = se)
 final_stats <- data.frame(cbind(grand_mean$timeRelativeToTrialStart, grand_standard_deviation$timeRelativeToTrialStart, grand_standard_error$timeRelativeToTrialStart))
 colnames(final_stats) <- c("means", "std", "se")
-final_stats
+results_question_a = round(final_stats / 1000, digits = 2)
+# results_question_a
+row.names(results_question_a) <- c("Dual Dial Focus", "Dual Steer Focus")
+results_question_a
+
 ```
+### Question 1B
+```{r}
+subsetted_data <- subset(keyPressDataWithLaneDeviation, typingErrorMadeOnTrial == 0)
+subsetted_data <- subset(subsetted_data, (partOfExperiment == "dualSteerFocus" | partOfExperiment == "dualDialFocus"))
+# subsetted_data <- subset(subsetted_data, Event1 == "Keypress")
+aggregated_data <- aggregate(lanePosition ~ pp + partOfExperiment, subsetted_data, FUN = function(x) mean(abs(x)))
+head(aggregated_data)
+```
+
+
+```{r}
+grand_mean <- aggregate(lanePosition ~ partOfExperiment, aggregated_data, FUN = mean)
+grand_standard_deviation <- aggregate(lanePosition ~ partOfExperiment, aggregated_data, FUN = sd)
+grand_standard_error <- aggregate(lanePosition ~ partOfExperiment, aggregated_data, FUN = se)
+final_stats <- data.frame(cbind(grand_mean$lanePosition, grand_standard_deviation$lanePosition, grand_standard_error$lanePosition))
+colnames(final_stats) <- c("means", "std", "se")
+results_question_1b = round(final_stats, digits = 2)
+row.names(results_question_1b) <- c("Dual Dial Focus", "Dual Steer Focus")
+results_question_1b
+# reshaped_aggregated_data = dcast(aggregated_data, pp + partOfExperiment  ~ phoneNrLengthAfterKeyPress)
+# reshaped_aggregated_data
+```
+### Question 1C
 
 ```{r}
 subsetted_data <- subset(keyPressDataWithLaneDeviation, typingErrorMadeOnTrial == 0)
 subsetted_data <- subset(subsetted_data, Event1 == "Keypress")
-subsetted_data <- subset(subsetted_data, partOfExperiment == c("dualDialFocus", "dualSteerFocus"))
-aggregated_data <- aggregate(lanePosition ~ pp + partOfExperiment, subsetted_data, FUN = function(x) mean(abs(x)))
-grand_mean <- aggregate(lanePosition ~ partOfExperiment, aggregated_data, FUN = mean)
-grand_standard_deviation <- aggregate(lanePosition ~ partOfExperiment, aggregated_data, FUN = sd)
-grand_standard_error <- aggregate(lanePosition ~ partOfExperiment, aggregated_data, FUN = function(x) {
-  return(sqrt(var(x) / length(x)))
-})
-final_stats <- data.frame(cbind(grand_mean$lanePosition, grand_standard_deviation$lanePosition, grand_standard_error$lanePosition))
-colnames(final_stats) <- c("means", "std", "se")
-final_stats
-# reshaped_aggregated_data = dcast(aggregated_data, pp + partOfExperiment  ~ phoneNrLengthAfterKeyPress)
-# reshaped_aggregated_data
+subsetted_data <- subset(subsetted_data, (partOfExperiment == "dualSteerFocus" | partOfExperiment == "dualDialFocus"))
+subsetted_data$absLanePosition <- abs(subsetted_data$lanePosition)
+subsetted_data$partOfExperiment <- factor(subsetted_data$partOfExperiment)
+subsetted_data$timeRelativeToTrialStart <- round(subsetted_data$timeRelativeToTrialStart/1000, 2)
+
+per_key_and_participant_data <- subsetted_data %>% group_by(pp, phoneNrLengthAfterKeyPress, partOfExperiment) %>% summarise("adjMeanTime"=mean(timeRelativeToTrialStart), "adjMeanLanePosition"=mean(absLanePosition))
+per_key_data <- per_key_and_participant_data %>% group_by(phoneNrLengthAfterKeyPress, partOfExperiment) %>% summarise("meanTime"=mean(adjMeanTime), "meanLanePosition"=mean(adjMeanLanePosition), "seLanePosition"=round(se(adjMeanLanePosition),2))
+per_key_data$partOfExperiment = factor(per_key_data$partOfExperiment)
+
+mlegend = guide_legend(title="Trial Conditions")
+ggplot(data = per_key_data,  aes(x = meanTime, y = meanLanePosition, colour = partOfExperiment), group=partOfExperiment) +
+  geom_point(aes(shape=partOfExperiment), size=3) +
+  geom_errorbar(aes(ymin=meanLanePosition-seLanePosition, ymax=meanLanePosition+seLanePosition), width=.1) +
+  guides(colour=mlegend,shape=mlegend) + 
+  labs(x="Dialing Time (sec)", y="Lateral Deviation (m)", title="Vehicle Lateral Deviation between consecutive keypresses\nunder varying Dual-task Performance Objectives")+
+  geom_line() 
+
 ```
+### Question 1D
+
+TODO: EVA
 
 
-```{r}
-subsetted_data <- subset(keyPressDataWithLaneDeviation, typingErrorMadeOnTrial == 0)
-subsetted_data <- subset(subsetted_data, Event1 != "Incorrect")
-subsetted_data <- subset(subsetted_data, partOfExperiment == c("dualDialFocus", "dualSteerFocus"))
-subsetted_data
-aggregated_data <- aggregate(lanePosition ~ pp + partOfExperiment + phoneNrLengthAfterKeyPress, subsetted_data, FUN = function(x) mean(abs(x)))
-aggregated_data <- aggregate(lanePosition ~ partOfExperiment + phoneNrLengthAfterKeyPress, subsetted_data, FUN = function(x) mean(abs(x)))
-aggregated_data
-```
-```{r}
-dualDF <- subset(reshaped_aggregated_data, partOfExperiment == "dualDialFocus")
-dualDF$partOfExperiment <- NULL
-# dualDF = data.frame(dualDF)
-dualDF <- melt(dualDF, id.vars = "pp")
-head(dualDF)
-
-ggplot(data = dualDF, aes(x = variable, y = value, group = pp)) +
-  geom_line(aes(color = pp)) +
-  geom_point()
-```
-```{r}
-aggregated_data$phoneNrLengthAfterKeyPress <- factor(aggregated_data$phoneNrLengthAfterKeyPress)
-# aggregated_data$pp <- factor(aggregated_data$pp)
-aggregated_data$partOfExperiment <- factor(aggregated_data$partOfExperiment)
-aggregated_data
-```
-
-```{r}
-ggplot(data = aggregated_data, aes(x = phoneNrLengthAfterKeyPress, y = lanePosition, group = partOfExperiment, color = partOfExperiment)) +
-  # geom_line(aes(y=lanePosition, x=phoneNrLengthAfterKeyPress))+
-  # geom_point(aes(color=partOfExperiment))
-  geom_boxplot(group = partOfExperiment)
-```
 
