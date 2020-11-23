@@ -1751,19 +1751,9 @@ summary {
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShkcGx5cilcbmBgYCJ9 -->
-<pre class="r"><code>library(dplyr)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZyBtZXNzYWdlczpcbjE6IEluIHJlYWRDaGFyKGZpbGUsIHNpemUsIFRSVUUpIDogdHJ1bmNhdGluZyBzdHJpbmcgd2l0aCBlbWJlZGRlZCBudWxzXG4yOiBJbiByZWFkQ2hhcihmaWxlLCBzaXplLCBUUlVFKSA6IHRydW5jYXRpbmcgc3RyaW5nIHdpdGggZW1iZWRkZWQgbnVsc1xuMzogSW4gcmVhZENoYXIoZmlsZSwgc2l6ZSwgVFJVRSkgOiB0cnVuY2F0aW5nIHN0cmluZyB3aXRoIGVtYmVkZGVkIG51bHNcbjQ6IEluIHJlYWRDaGFyKGZpbGUsIHNpemUsIFRSVUUpIDogdHJ1bmNhdGluZyBzdHJpbmcgd2l0aCBlbWJlZGRlZCBudWxzXG41OiBJbiByZWFkQ2hhcihmaWxlLCBzaXplLCBUUlVFKSA6IHRydW5jYXRpbmcgc3RyaW5nIHdpdGggZW1iZWRkZWQgbnVsc1xuIn0= -->
-<pre><code>Warning messages:
-1: In readChar(file, size, TRUE) : truncating string with embedded nuls
-2: In readChar(file, size, TRUE) : truncating string with embedded nuls
-3: In readChar(file, size, TRUE) : truncating string with embedded nuls
-4: In readChar(file, size, TRUE) : truncating string with embedded nuls
-5: In readChar(file, size, TRUE) : truncating string with embedded nuls</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5cilcbmxpYnJhcnkocmVzaGFwZTIpXG5saWJyYXJ5KGdncGxvdDIpXG5saWJyYXJ5KGdyaWRFeHRyYSlcbmBgYCJ9 -->
-<pre class="r"><code>library(tidyr)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShkcGx5cilcbmxpYnJhcnkodGlkeXIpXG5saWJyYXJ5KHJlc2hhcGUyKVxubGlicmFyeShnZ3Bsb3QyKVxubGlicmFyeShncmlkRXh0cmEpXG5gYGAifQ== -->
+<pre class="r"><code>library(dplyr)
+library(tidyr)
 library(reshape2)
 library(ggplot2)
 library(gridExtra)</code></pre>
@@ -1774,15 +1764,26 @@ library(gridExtra)</code></pre>
 <h1>Assignment 1</h1>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2UgPC0gZnVuY3Rpb24oeCkgc2QoeCkvc3FydChsZW5ndGgoeCkpXG5rZXlQcmVzc0RhdGFXaXRoTGFuZURldmlhdGlvbiA9IHJlYWQuY3N2KFwiLi9rZXlQcmVzc0RhdGFXaXRoTGFuZURldmlhdGlvbi5jc3ZcIilcbnRhYmxlZHJpZnQgPC0gcmVhZC5jc3YoXCJ0YWJsZU9mRHJpZnRWYWx1ZXNDYWxpYnJhdGlvbi5jc3ZcIilcbnRhYmxlZHJpZnQkdHJpYWxUaW1lID0gcm91bmQodGFibGVkcmlmdCR0cmlhbFRpbWUvMTAwMCwgMilcbnRhYmxlZHJpZnQkdHJpYWwgPSBmYWN0b3IodGFibGVkcmlmdCR0cmlhbClcbmhlYWQodGFibGVkcmlmdClcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2UgPC0gZnVuY3Rpb24oeCkgc2QoeCkvc3FydChsZW5ndGgoeCkpXG5jb21wdXRlX2VzdGltYXRvciA8LSBmdW5jdGlvbihkYXRhKXtcbiAgZGF0YSRkaWZmcyA9IDBcbiAgZGF0YSRkaWZmc1syOm5yb3coZGF0YSldID0gZGlmZihkYXRhJHRpbWVSZWxhdGl2ZVRvVHJpYWxTdGFydClcbiAgZGF0YSRkaWZmc1tkYXRhJHBob25lTnJMZW5ndGhCZWZvcmVLZXlQcmVzcyA9PSAwXSA9IGRhdGEkdGltZVJlbGF0aXZlVG9UcmlhbFN0YXJ0W2RhdGEkcGhvbmVOckxlbmd0aEJlZm9yZUtleVByZXNzID09IDBdXG4gIHBlcl9wYXJ0aWNpcGFudF9wZXJfa2V5X2RhdGEgPC0gZGF0YSAlPiUgZ3JvdXBfYnkocHAsIHRyaWFsLCBwaG9uZU5yTGVuZ3RoQmVmb3JlS2V5UHJlc3MpICU+JSBzdW1tYXJpc2UoXCJhZGpNZWFuRGlmZnNcIj1tZWFuKGRpZmZzKSlcbiAgdG1wIDwtIHBlcl9wYXJ0aWNpcGFudF9wZXJfa2V5X2RhdGEgJT4lIGdyb3VwX2J5KHBwLCBwaG9uZU5yTGVuZ3RoQmVmb3JlS2V5UHJlc3MpICU+JSBzdW1tYXJpc2UoXCJhZGpNZWFuRGlmZnNcIj1tZWFuKGFkak1lYW5EaWZmcykpXG4gIHBlcl9rZXlfZGF0YSA8LSB0bXAgJT4lIGdyb3VwX2J5KHBwKSAlPiUgc3VtbWFyaXNlKFwiYWRqTWVhbkRpZmZzXCI9bWVhbihhZGpNZWFuRGlmZnMpKVxuICBwZXJfa2V5X3dvX3plcm9zID0gcGVyX2tleV9kYXRhWzE6bnJvdyhwZXJfa2V5X2RhdGEpLF0kYWRqTWVhbkRpZmZzXG4gIGF2ZXJhZ2Vfa2V5X3ByZXNzX2ludGVydmFsbCA8LSByb3VuZChtZWFuKHBlcl9rZXlfd29femVyb3MpKVxuICByZXR1cm4oYXZlcmFnZV9rZXlfcHJlc3NfaW50ZXJ2YWxsKVxufVxua2V5UHJlc3NEYXRhV2l0aExhbmVEZXZpYXRpb24gPSByZWFkLmNzdihcIi4va2V5UHJlc3NEYXRhV2l0aExhbmVEZXZpYXRpb24uY3N2XCIpXG50YWJsZWRyaWZ0IDwtIHJlYWQuY3N2KFwidGFibGVPZkRyaWZ0VmFsdWVzQ2FsaWJyYXRpb24uY3N2XCIpXG50YWJsZWRyaWZ0JHRyaWFsVGltZSA9IHJvdW5kKHRhYmxlZHJpZnQkdHJpYWxUaW1lLzEwMDAsIDIpXG50YWJsZWRyaWZ0JHRyaWFsID0gZmFjdG9yKHRhYmxlZHJpZnQkdHJpYWwpXG5oZWFkKHRhYmxlZHJpZnQpXG5gYGAifQ== -->
 <pre class="r"><code>se &lt;- function(x) sd(x)/sqrt(length(x))
+compute_estimator &lt;- function(data){
+  data$diffs = 0
+  data$diffs[2:nrow(data)] = diff(data$timeRelativeToTrialStart)
+  data$diffs[data$phoneNrLengthBeforeKeyPress == 0] = data$timeRelativeToTrialStart[data$phoneNrLengthBeforeKeyPress == 0]
+  per_participant_per_key_data &lt;- data %&gt;% group_by(pp, trial, phoneNrLengthBeforeKeyPress) %&gt;% summarise(&quot;adjMeanDiffs&quot;=mean(diffs))
+  tmp &lt;- per_participant_per_key_data %&gt;% group_by(pp, phoneNrLengthBeforeKeyPress) %&gt;% summarise(&quot;adjMeanDiffs&quot;=mean(adjMeanDiffs))
+  per_key_data &lt;- tmp %&gt;% group_by(pp) %&gt;% summarise(&quot;adjMeanDiffs&quot;=mean(adjMeanDiffs))
+  per_key_wo_zeros = per_key_data[1:nrow(per_key_data),]$adjMeanDiffs
+  average_key_press_intervall &lt;- round(mean(per_key_wo_zeros))
+  return(average_key_press_intervall)
+}
 keyPressDataWithLaneDeviation = read.csv(&quot;./keyPressDataWithLaneDeviation.csv&quot;)
 tabledrift &lt;- read.csv(&quot;tableOfDriftValuesCalibration.csv&quot;)
 tabledrift$trialTime = round(tabledrift$trialTime/1000, 2)
 tabledrift$trial = factor(tabledrift$trial)
 head(tabledrift)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6MTcsIm5yb3ciOjZ9LCJyZGYiOiJINHNJQUFBQUFBQUFCcVdWVFdnVFFSVEhKNXVQMm1paXdWNFVCRThpUXROa2t6UVZLUnUvRUtGQ3JSYlRLcFJKTXFsTHQ3dHhkOU5xUlFqaXZSY1BWUzh0RmFFZzNoVWhmbDFzUk1RS2dZS29SejFWVUMrVzF0bWRmV095S2sxeFlmai8zcHQ1TSsvTkJ6dHdMSnNJWm9NSUlTL3lJUUY1L1JSUjRHaC9YRXlKQ1BrRWFubG9UN3VsbCttb25SUWl0SVd0WVVmSzEvdjYxQXF5OWRJc1UvTUowOG1QVEtjYys5b0tnamlwa2p2MTl1dkNhcXZLNDE3ZDN4TGY5L2xLcXdweG1mbzd0UGZGblh1Wit0TDZoME9GWVV1cDdLRzZkbnh1OFNuVjFmZGR1MmVwL2hTMm5Yd0VjZFhCdnBtUndJK2IxVE1MQjJLRElxNE8rQjk3NXRXdWZ5bVB5N0M4VzFXSVE1di8yTDZzTUtOVjVYRTNwajZkZU5CeFZWcnVMYzNYZzczU2wra0wrNzgvbTVhK1dWYnByclRLK2pOQzBmNTQzUG5sMDd0ZXQ0MjBxalFtdEVGOUcvWHZzUHZaUmZTWmVwbjhGemZQNXptOE9lRFpMczdSdG9SUWpiNmFXcG8yT25OdGhyNFNxTWJ6OTliMHJBSUttU0NLNGVUVUFjdkVBVVNBQkVBU0lBWFFEWkFHNkFFNDZJQVFqM0dLY3hJNUpUZ2xPYVU0ZFhOS2Mrcmh4TmNRWTY3aS9Ia0ZHMUFicjdpSTg2YW1VMXBEcnBzdkxkeXl2dHZTUTBlZkoreFBldW5ZYjJCazh6SXFIaWV3VElRZnRUek9qNzJrR2RrR0htcmdZWWZiZGMzRXBxeXBXYmRqeU8zNEkrUWNKR0tVQ0NrNFJzZ3dDZEg3TlVPMmhqak9yYVBZY0xsQ09SMlBFYmVUcUtPeVNnYktxaXFybzdCekJWMmVJTHBqaFZWTkg4ZUtQRVVLWjMrWDZqZDFHU3VRb0czWXZjMDdSak9mak1LdVdkZFZxTEI5RGJDQjNuWFhvUVVMMk1UUm9vNnRxYXlEYTVxdVRTdFp1ZFBKQk9zUDRYY0ZlM1NYWXpzdGk4NVU2TXhmTEt0am5VbHJnWVkzRW5JMDBNQVJ0cVFQRXZQRG5yQ05ndW9WbkNOUWZaZ1dhZGNZTGVteWFrSWwxR3RFVFhweU1DNlkxeFR3c0V1NTlndS9iMEFaR1FjQUFBPT0ifQ== -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6MTcsIm5yb3ciOjZ9LCJyZGYiOiJINHNJQUFBQUFBQUFCcVdWVFdnVFFSVEhKOXNrdGRGVWc3MG9DSjVFaEtaTjBqUVZLUnUvRUNGQ2pSYlRLcFJKTW9sTE43dHhkOU5xUkFqaXZSY1BWUzh0RmFFZzNoVWhmbDFzUmNRS2dZS29SejFWVUMrRzFObWRmV095S2sxeFlmai8zcHQ1TSsvTkI1czhsb3I0VWo2RVVBZHlJd0YxZUNnaTc5R1JVRGdhUnNndFVNdEZlN3BNdlV4SDdhUVFvSzNiSEhha2REMlJVQ3JJMGt0elRJMG5US2MvTWkzYjlyVTFCSEZpSlgzcTdkZkZlcnZLNDE3ZDN4TGE5L2xLdXdweDhkbzd0UGZGblh2eDJzcjZoMFBaY1ZPcDdLSGFPRDYvOUpScS9YM2Y3am1xUDRWdEp4OUJYSFUwTVR2aC9YR3plbWJ4UVA5b0dGZVRuc2V1QmFYdlg4cmo0aXp2ZGhYaTBPWS90aTlyekdoWGVkeU44cWNURDNxdWlxdkR4WVdhYjFqOE1uTmgvL2RuTStJMzB5cmVGZXVzUHk3a3JJL0huVjg5dmV0MTUwUzdTbVA4RzlTM1VmOE9xNTlkUkxlaGxjaC9jZXQ4cnNPYkE1N3Qwanh0S3dndDAxZXpIS09OenJ3OFMxOEpWT1A2ZTJ0NVZsNlpUQkZadDNQcWdXVkNBR0dBQ01BQVFCUmdFQ0FHTUFSdzBBWWgxTThweENuTUtjSnBnRk9VMHlDbkdLY2hUbnlOY0wrak9FOUd4anJVeGl2TzRZeWhhcFFheUhIenhjVmI1bmRiZkdqcjg0ajFpUzl0K3cyTWJGMUd3UVVDeXdUNFVVc0ZmdXhGVlU4MThWZ1RqOXZjcGFrR05pUlZTVGtkWTA3SEh5SG5JQkc5U0VqV052eTZRWWcyb3VxU09jUjJiczFqM2VIeXB6VThTWnhPb3VRbGhTUkxpaUlwZWRpNXJDWk5FYzIydWhWVksyQlpLcFBzMmQrbGVneE53aklrYUJsV2IrdU8wY3luZzdCcjVuVVZLbXhmdld4Z3g3cmowSHhaYk9CZ1RzUG1WT2JCdFV6WHFSYk4zT2xrZ3ZtSDhEaUNYWnJEc1oyV1JXZks5bVl1bHBUSjNwQzVRTk1iOGR2cWJlSUFXOUlOaVhsZ1Q5aEdRZlV5VGhPb3Zwc1dhZFVZTEdxU1lrQWwxS3NIRFhweU1NNlhVV1h3c0V2WitBVlV3eGNzR1FjQUFBPT0ifQ== -->
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["time"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["posX"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["posY"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["posZ"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["rotationX"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["rotationY"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["rotationZ"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["rotationW"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["speed"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["steerPosition"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["gasPosition"],"name":[11],"type":["int"],"align":["right"]},{"label":["brakePosition"],"name":[12],"type":["int"],"align":["right"]},{"label":["engineRunning"],"name":[13],"type":["chr"],"align":["left"]},{"label":["driver"],"name":[14],"type":["chr"],"align":["left"]},{"label":["normalizedTime"],"name":[15],"type":["int"],"align":["right"]},{"label":["trial"],"name":[16],"type":["fctr"],"align":["left"]},{"label":["trialTime"],"name":[17],"type":["dbl"],"align":["right"]}],"data":[{"1":"1.478086e+12","2":"0.008","3":"0.224","4":"24400.00","5":"-0.0013","6":"-5e-04","7":"0","8":"1","9":"0.01","10":"0.0017","11":"0","12":"0","13":"true","14":"A","15":"51873","16":"1","17":"0.00","_rn_":"1"},{"1":"1.478086e+12","2":"0.008","3":"0.224","4":"24400.00","5":"-0.0012","6":"-5e-04","7":"0","8":"1","9":"0.41","10":"0.0017","11":"0","12":"0","13":"true","14":"A","15":"51923","16":"1","17":"0.05","_rn_":"2"},{"1":"1.478086e+12","2":"0.008","3":"0.224","4":"24399.99","5":"-0.0011","6":"-5e-04","7":"0","8":"1","9":"0.83","10":"0.0017","11":"0","12":"0","13":"true","14":"A","15":"51973","16":"1","17":"0.10","_rn_":"3"},{"1":"1.478086e+12","2":"0.008","3":"0.224","4":"24399.97","5":"-0.0011","6":"-5e-04","7":"0","8":"1","9":"1.29","10":"0.0017","11":"0","12":"0","13":"true","14":"A","15":"52023","16":"1","17":"0.15","_rn_":"4"},{"1":"1.478086e+12","2":"0.008","3":"0.224","4":"24399.95","5":"-0.0011","6":"-5e-04","7":"0","8":"1","9":"1.78","10":"0.0017","11":"0","12":"0","13":"true","14":"A","15":"52069","16":"1","17":"0.20","_rn_":"5"},{"1":"1.478086e+12","2":"0.008","3":"0.224","4":"24399.92","5":"-0.0011","6":"-5e-04","7":"0","8":"1","9":"2.30","10":"0.0017","11":"0","12":"0","13":"true","14":"A","15":"52120","16":"1","17":"0.25","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10],"total":[17]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
@@ -1791,15 +1792,15 @@ head(tabledrift)</code></pre>
 <!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<div id="question-3a" class="section level3">
-<h3>Question 3A</h3>
+<div id="question-4a" class="section level3">
+<h3>Question 4A</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmlsdGVyZWRfZGF0YSA9IGtleVByZXNzRGF0YVdpdGhMYW5lRGV2aWF0aW9uICU+JSBmaWx0ZXIocGFydE9mRXhwZXJpbWVudCA9PSBcInNpbmdsZURpYWxpbmcyXCIpICU+JSBmaWx0ZXIodHlwaW5nRXJyb3JNYWRlT25UcmlhbD09MCkgJT4lIGZpbHRlcihFdmVudDEgPT0gXCJLZXlwcmVzc1wiKVxuIGhlYWQoZmlsdGVyZWRfZGF0YSlcbmBgYCJ9 -->
 <pre class="r"><code>filtered_data = keyPressDataWithLaneDeviation %&gt;% filter(partOfExperiment == &quot;singleDialing2&quot;) %&gt;% filter(typingErrorMadeOnTrial==0) %&gt;% filter(Event1 == &quot;Keypress&quot;)
  head(filtered_data)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6MTQsIm5yb3ciOjZ9LCJyZGYiOiJINHNJQUFBQUFBQUFCcjFVVFc3VFFCU2VPbkZDTFJvcUtnRXFRa0ppSGN0MmZoeGxSOXVBb0g5Ulc2RnVwOG1rc1hCbXJQRWt0Q3U2NEFDY2dRdHdCVmJjZ1Z2MEJJVTM5a3l3RFRVc0VKWkc3Mi9lOC92NTVoM3RuTGFzVXdzaFZFRlZaS0NLQ1N5cWJROWRyK01oVkRWQVdnSExxcVFYY0dzRG1BYWNkWGxOR1I1Nmp0dHR1bTdUZFo2NlRyL2w5WjEydjl2cGxKcTc3Vkt6NzVXYWUyNlp1ZGN1Q2Q3cE83NFBwcldrQWxuZTcwKzJ3anU3NURMaUpJNy91WnovRDlLdGRoUmpPTDdpS283ZlUyd1ZXTjFjVS9MdFFwajZ3WHgyUnJpVEYvMjgyTXVMbmJ6WXpvdXRUTU9lM0hLMC9iWXZtMkVqRHVoNVNIWUNIQUxqL1dmdG4rRnJsOFBYTG9ldlhRNWZ1eHkrZGpsODdSUys4aEhXdHVZZnZyMThmWTBTdW51VjBqMms2TWVVdnZtU1VqSkUydS85dFdUcm4vNldGcVlybjRmY0RKVUVzQURDakYybWZSL09KcHhuY0w3QzljOG8vOXlLdnJYQ3BqRXBuaEg5TmhvYTlTS1lFZjBzb2toeHRjR0NVS0hiZVhjNFpaUWM4R1AyQXZQY0RUMFBVM0JBZ1JJZWlNc0lBREhnblBGOVBDYUg5Q1JqWFk4d0Y0ZVR3VVZFT1B5YUNxVmZrNGxzTTdvZ1hKQ3hVbHBTK1lydXgyU2tjd2t4SlVNV0J5SmdWT2tlUjJsK2U0U2VpK2tXbVRCT1lCVU1NNnZoa1F4MFJFSXNnZ1U1WVVsQ3h3SXlVZmJOWElqbkUwSDRNa0sraTZ1Y3ZiTjFKMlg3amF0MGZMKzBleFRpNVNyU1NtdU1CYlluSFB4QnVpbTQxRmtreXdJblkwTU5NZXU4d2d1S2UzTXFNeGszUjlNNWZkdVVBTGJRejEyN3BtZ3R3emZTWHhyZlZTaFR6eE1LRDZoR2dobmlNNkluMW9DS2s0THRpQWZMZVZtZ2pXM0J4SEt5MW9pRldwUFVobTUrQUIxQ0tYMEpCd0FBIn0= -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6MTQsIm5yb3ciOjZ9LCJyZGYiOiJINHNJQUFBQUFBQUFCcjFVVFc3VFFCU2VPbkZDTFJvcUtnRXFRa0ppSGN0MmZoeGxSOXVBb0g5Ulc2RnVwOG1rc1hCbXJQRWt0Q3U2NEFDY2dRdHdCVmJjZ1Z2MEJJVTM5a3l3RFRVc0VKWkc3Mi9lOC92NTVoM3RuTGFzVXdzaFZFRlZaS0NLQ1N5cWJROWRyK01oVkRWQVdnSExxcVFYY0dzRG1BYWNkWGxOR1I1Nmp0dHR1bTdUZFo2NlRyL2w5WjEydjl2cGxKcTc3Vkt6NzVXYWUyNlp1ZGN1Q2Q3cE83NFBwcldrQWxuZTcwKzJ3anU3NURMaUpJNy91WnovRDlLdGRoUmpPTDdpS283ZlUyd1ZXTjFjVS9MdFFwajZ3WHgyUnJpVEYvMjgyTXVMbmJ6WXpvdXRUTU9lM0hLMC9iWXZtMkVqRHVoNVNIWUNIQUxqL1dmdG4rRnJsOFBYTG9ldlhRNWZ1eHkrZGpsODdSUys4aEhXdHVZZnZyMThmWTBTdW51VjBqMms2TWVVdnZtU1VqSkUydS85dFdUcm4vNldGcVlybjRmY0RKVUVzQURDakYybWZSL09KcHhuY0w3QzljOG8vOXlLdnJYQ3BqRXBuaEg5TmhvYTlTS1lFZjBzb2toeHRjR0NVS0hiZVhjNFpaUWM4R1AyQXZQY0RUMFBVM0JBZ1JJZWlNc0lBREhnblBGOVBDYUg5Q1JqWFk4d0Y0ZVR3VVZFT1B5YUNxVmZrNGxzTTdvZ1hKQ3hVbHBTK1lydXgyU2tjd2t4SlVNV0J5SmdWT2tlUjJsK2U0U2VpK2tXbVRCT1lCVU1NNnZoa1F4MFJFSXNnZ1U1WVVsQ3h3SXlVZmJOWElqbkUwSDRNa0sraTZ1Y3ZiTjFKMlg3amF0MGZMKzBleFRpNVNyU1NtdU1CYlluSFB4QnVpbTQxRmtreXdJblkwTU5NZXU4d2d1S2UzTXFNeGszUjlNNWZkdVVDOHRDUDNmdG1xSzFETjlJZjJsOFY2Rk1QVThvUEtBYUNXYUl6NGllV0FNcVRncTJJeDRzNTJXQk5yWUZFOHZKV2lNV2FrMVNHN3I1QVhza3k5Z0pCd0FBIn0= -->
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["time"],"name":[1],"type":["chr"],"align":["left"]},{"label":["pp"],"name":[2],"type":["int"],"align":["right"]},{"label":["Event1"],"name":[3],"type":["chr"],"align":["left"]},{"label":["PhoneNrSoFar"],"name":[4],"type":["chr"],"align":["left"]},{"label":["Event2"],"name":[5],"type":["chr"],"align":["left"]},{"label":["trial"],"name":[6],"type":["int"],"align":["right"]},{"label":["typingErrorMadeOnTrial"],"name":[7],"type":["int"],"align":["right"]},{"label":["partOfExperiment"],"name":[8],"type":["chr"],"align":["left"]},{"label":["timeConverted"],"name":[9],"type":["chr"],"align":["left"]},{"label":["timeInMsec"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["lanePosition"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["phoneNrLengthBeforeKeyPress"],"name":[12],"type":["int"],"align":["right"]},{"label":["timeRelativeToTrialStart"],"name":[13],"type":["int"],"align":["right"]},{"label":["phoneNrLengthAfterKeyPress"],"name":[14],"type":["int"],"align":["right"]}],"data":[{"1":"2016-11-10 10:32:04:655","2":"1","3":"Keypress","4":"","5":"Number0","6":"29","7":"0","8":"singleDialing2","9":"2016-11-10 10:32:04.655","10":"1.47877e+12","11":"NA","12":"0","13":"9","14":"1","_rn_":"1"},{"1":"2016-11-10 10:32:04:664","2":"1","3":"Keypress","4":"0","5":"Number7","6":"29","7":"0","8":"singleDialing2","9":"2016-11-10 10:32:04.664","10":"1.47877e+12","11":"NA","12":"1","13":"18","14":"2","_rn_":"2"},{"1":"2016-11-10 10:32:04:672","2":"1","3":"Keypress","4":"07","5":"Number8","6":"29","7":"0","8":"singleDialing2","9":"2016-11-10 10:32:04.672","10":"1.47877e+12","11":"NA","12":"2","13":"26","14":"3","_rn_":"3"},{"1":"2016-11-10 10:32:04:681","2":"1","3":"Keypress","4":"078","5":"Number5","6":"29","7":"0","8":"singleDialing2","9":"2016-11-10 10:32:04.681","10":"1.47877e+12","11":"NA","12":"3","13":"35","14":"4","_rn_":"4"},{"1":"2016-11-10 10:32:04:844","2":"1","3":"Keypress","4":"0785","5":"Number4","6":"29","7":"0","8":"singleDialing2","9":"2016-11-10 10:32:04.844","10":"1.47877e+12","11":"NA","12":"4","13":"198","14":"5","_rn_":"5"},{"1":"2016-11-10 10:32:05:077","2":"1","3":"Keypress","4":"07854","5":"Number3","6":"29","7":"0","8":"singleDialing2","9":"2016-11-10 10:32:05.077","10":"1.47877e+12","11":"NA","12":"5","13":"431","14":"6","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10],"total":[14]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
@@ -1810,103 +1811,26 @@ head(tabledrift)</code></pre>
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmlsdGVyZWRfZGF0YSRkaWZmcyA9IDBcbmZpbHRlcmVkX2RhdGEkZGlmZnNbMjpucm93KGZpbHRlcmVkX2RhdGEpXSA9IGRpZmYoZmlsdGVyZWRfZGF0YSR0aW1lUmVsYXRpdmVUb1RyaWFsU3RhcnQpXG5maWx0ZXJlZF9kYXRhJGRpZmZzW2ZpbHRlcmVkX2RhdGEkcGhvbmVOckxlbmd0aEJlZm9yZUtleVByZXNzID09IDBdID0gZmlsdGVyZWRfZGF0YSR0aW1lUmVsYXRpdmVUb1RyaWFsU3RhcnRbZmlsdGVyZWRfZGF0YSRwaG9uZU5yTGVuZ3RoQmVmb3JlS2V5UHJlc3MgPT0gMF1cbmhlYWQoZmlsdGVyZWRfZGF0YSlcbmBgYCJ9 -->
-<pre class="r"><code>filtered_data$diffs = 0
-filtered_data$diffs[2:nrow(filtered_data)] = diff(filtered_data$timeRelativeToTrialStart)
-filtered_data$diffs[filtered_data$phoneNrLengthBeforeKeyPress == 0] = filtered_data$timeRelativeToTrialStart[filtered_data$phoneNrLengthBeforeKeyPress == 0]
-head(filtered_data)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29tcHV0ZV9lc3RpbWF0b3IoZmlsdGVyZWRfZGF0YSlcbmBgYCJ9 -->
+<pre class="r"><code>compute_estimator(filtered_data)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6MTUsIm5yb3ciOjZ9LCJyZGYiOiJINHNJQUFBQUFBQUFCcjFVVFc3VFFCU2VPbkZDTFpKVVZBSlVoRlRCT3BidC9EaktDdG9HQlAyTDJncDFpUnVQR3d0bmJJMG5vVjNSQlFmZ0RGeUFLN0RpRHR5aUp5aThzV2VDYlZIREFtSHA2ZjM1dlhrLzM4elJ6bWxITzlVUVFoVlVSUXFxcUNDaTJ2Yll0SG9XUWxVRnRCWHdySEorQVgrdGc5QUNXdU8vQ2NjRHl6RDdiZE5zbThhbWFRdzcxdERvRHZ1OVhxbTczeTExMjFhcGUyQ1d1UWZka3VTOW9XSGI0R29rSGZEMmZrL1pEdS9zNHN1STRqais1M3IrSENSSGJRaEJNV3doVlF4N0lNUXFpSEs0S3BlN2hUVDFnL25zREZNanI5cDVkWkJYZTNtMW0xYzdtWUU5dm9Xay83WXZXMkV6OXNsNWdIZDhKd0RCK3MvV1A4TlhMNGV2WGc1ZnZSeStlamw4OVhMNDZpbDhtN3lEcmZuSDd5OWZYNk9FNzE2bGZBOEovaW5sYjc2bUhJK1JqUHR3emNYNjU3L2xoZTN5NjhGZmhrb0NXQUJoeHMvTHZnZTBBZlFVNkJ2OC9nWGxyMXN4dGlicmV2WWtQV0RKTnd1Nit6YmxNK0hJdjFBcWNXWlkzcW1XdkMzTW4yRjVuYUpJU0xYUkFoTW0xM0IzUEEwSlBxREg0UXVINXY2UWUxUVpCZlFJNVQ2N2pBQklJMHBEdXUrNCtKQ2NaTHhya1VQWm9UZTZpRENGb3drVDlnWXZaRHNrQzB3WmRvVlI0OFpYWkQvR0UxbEw0QkE4RG1PZitTRVJ0a2RSV3Q4ZUp1ZHN1b1c5a0dKNFFzYVpKK1VoVDNTRUE0ZjVDM3dTSmdVZE02aEUrRGR5S1o1N0ROTkNCdFgxUFM4dWpIU1ZodTkxT1ZhK1ErVXFIWHl0T1B0SjRDemZNMm5VWEljNXVrY2hIclNiUWtnOWpIaVBFS1NzQ3lSa2cxZG93ZENhRTE2SjI1NU01K1JkZThBUFFMOGU3SWJndFl6Y1NvOVVmb2hVcWx3dVRNRW5FaFpxNEp4aHViNG1kSncwckVmVVh5NVBBMnVzczVBdDE2eE53a0Jha3Q3UXpVOFROS0ptVGdjQUFBPT0ifQ== -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["time"],"name":[1],"type":["chr"],"align":["left"]},{"label":["pp"],"name":[2],"type":["int"],"align":["right"]},{"label":["Event1"],"name":[3],"type":["chr"],"align":["left"]},{"label":["PhoneNrSoFar"],"name":[4],"type":["chr"],"align":["left"]},{"label":["Event2"],"name":[5],"type":["chr"],"align":["left"]},{"label":["trial"],"name":[6],"type":["int"],"align":["right"]},{"label":["typingErrorMadeOnTrial"],"name":[7],"type":["int"],"align":["right"]},{"label":["partOfExperiment"],"name":[8],"type":["chr"],"align":["left"]},{"label":["timeConverted"],"name":[9],"type":["chr"],"align":["left"]},{"label":["timeInMsec"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["lanePosition"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["phoneNrLengthBeforeKeyPress"],"name":[12],"type":["int"],"align":["right"]},{"label":["timeRelativeToTrialStart"],"name":[13],"type":["int"],"align":["right"]},{"label":["phoneNrLengthAfterKeyPress"],"name":[14],"type":["int"],"align":["right"]},{"label":["diffs"],"name":[15],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-11-10 10:32:04:655","2":"1","3":"Keypress","4":"","5":"Number0","6":"29","7":"0","8":"singleDialing2","9":"2016-11-10 10:32:04.655","10":"1.47877e+12","11":"NA","12":"0","13":"9","14":"1","15":"9","_rn_":"1"},{"1":"2016-11-10 10:32:04:664","2":"1","3":"Keypress","4":"0","5":"Number7","6":"29","7":"0","8":"singleDialing2","9":"2016-11-10 10:32:04.664","10":"1.47877e+12","11":"NA","12":"1","13":"18","14":"2","15":"9","_rn_":"2"},{"1":"2016-11-10 10:32:04:672","2":"1","3":"Keypress","4":"07","5":"Number8","6":"29","7":"0","8":"singleDialing2","9":"2016-11-10 10:32:04.672","10":"1.47877e+12","11":"NA","12":"2","13":"26","14":"3","15":"8","_rn_":"3"},{"1":"2016-11-10 10:32:04:681","2":"1","3":"Keypress","4":"078","5":"Number5","6":"29","7":"0","8":"singleDialing2","9":"2016-11-10 10:32:04.681","10":"1.47877e+12","11":"NA","12":"3","13":"35","14":"4","15":"9","_rn_":"4"},{"1":"2016-11-10 10:32:04:844","2":"1","3":"Keypress","4":"0785","5":"Number4","6":"29","7":"0","8":"singleDialing2","9":"2016-11-10 10:32:04.844","10":"1.47877e+12","11":"NA","12":"4","13":"198","14":"5","15":"163","_rn_":"5"},{"1":"2016-11-10 10:32:05:077","2":"1","3":"Keypress","4":"07854","5":"Number3","6":"29","7":"0","8":"singleDialing2","9":"2016-11-10 10:32:05.077","10":"1.47877e+12","11":"NA","12":"5","13":"431","14":"6","15":"233","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10],"total":[15]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuTkFcbmBgYCJ9 -->
-<pre class="r"><code>NA</code></pre>
-<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiYHN1bW1hcmlzZSgpYCByZWdyb3VwaW5nIG91dHB1dCBieSAncHAnLCAndHJpYWwnIChvdmVycmlkZSB3aXRoIGAuZ3JvdXBzYCBhcmd1bWVudClcbmBzdW1tYXJpc2UoKWAgcmVncm91cGluZyBvdXRwdXQgYnkgJ3BwJyAob3ZlcnJpZGUgd2l0aCBgLmdyb3Vwc2AgYXJndW1lbnQpXG5gc3VtbWFyaXNlKClgIHVuZ3JvdXBpbmcgb3V0cHV0IChvdmVycmlkZSB3aXRoIGAuZ3JvdXBzYCBhcmd1bWVudClcbiJ9 -->
+<pre><code>`summarise()` regrouping output by &#39;pp&#39;, &#39;trial&#39; (override with `.groups` argument)
+`summarise()` regrouping output by &#39;pp&#39; (override with `.groups` argument)
+`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDI2NFxuIn0= -->
+<pre><code>[1] 264</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-chunk-begin -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGVyX3BhcnRpY2lwYW50X3Blcl9rZXlfZGF0YSA8LSBmaWx0ZXJlZF9kYXRhICU+JSBncm91cF9ieShwcCwgdHJpYWwsIHBob25lTnJMZW5ndGhCZWZvcmVLZXlQcmVzcykgJT4lIHN1bW1hcmlzZShcImFkak1lYW5EaWZmc1wiPW1lYW4oZGlmZnMpKVxuYGBgIn0= -->
-<pre class="r"><code>per_participant_per_key_data &lt;- filtered_data %&gt;% group_by(pp, trial, phoneNrLengthBeforeKeyPress) %&gt;% summarise(&quot;adjMeanDiffs&quot;=mean(diffs))</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiYHN1bW1hcmlzZSgpYCByZWdyb3VwaW5nIG91dHB1dCBieSAncHAnLCAndHJpYWwnIChvdmVycmlkZSB3aXRoIGAuZ3JvdXBzYCBhcmd1bWVudClcbiJ9 -->
-<pre><code>`summarise()` regrouping output by &#39;pp&#39;, &#39;trial&#39; (override with `.groups` argument)</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaGVhZChwZXJfcGFydGljaXBhbnRfcGVyX2tleV9kYXRhKVxuYGBgIn0= -->
-<pre class="r"><code>head(per_participant_per_key_data)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImdyb3VwZWRfZGYiLCJ0YmxfZGYiLCJ0YmwiLCJkYXRhLmZyYW1lIl0sIm5jb2wiOjQsIm5yb3ciOjZ9LCJyZGYiOiJINHNJQUFBQUFBQUFCblZRUFUvRE1CQzl1RWxSSTZnaWRVUklpTDBSTFdKSDBJMFBWVXdkTVlsREFxa2RPYTZBamQvTjBIRCtxa29Fdy9rKzN0UDUzWHRjckM3aVZRd0FBd2lCd0NEQ0VvWTN5OW44Y2c0UUV1d0NSRVk2ZnlCcmdrV0ljYVJwQnZ3N1BIN3lUM2djSEo4WUNYYTMxakRXK05XWkplenlhYS9QbjJ4ZU8rQzM0Q2lyYWR0aWtld040NXdxbWhhU3JsbVBQcExpUGVVNGI1MCs4b1ZQMTNYZi9iMmVsQmpCZGtpYXhzTktWclIyelhGVENzNGU1QjNqTDZxOFpvV1E3Slo5TGlWRFpaWnlTUFBYZTBiNW9pb0t2WFhiKys1QU5Lb1NIQ0V5Y2U3c0h4VEkzaURaY0Mwd24yYmxocjlOWitmNmFtY3p1Tk1DWjcrdlEvdG4yTGxka2RzMVJOa1ZaLzZ5bWo0emY5a1k3VEpHcEkyc3VQTDI0clJObFZBN0IrSk0xSDVpam9QdER4VTN3SFYyQWdBQSJ9 -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["pp"],"name":[1],"type":["int"],"align":["right"]},{"label":["trial"],"name":[2],"type":["int"],"align":["right"]},{"label":["phoneNrLengthBeforeKeyPress"],"name":[3],"type":["int"],"align":["right"]},{"label":["adjMeanDiffs"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"29","3":"0","4":"9"},{"1":"1","2":"29","3":"1","4":"9"},{"1":"1","2":"29","3":"2","4":"8"},{"1":"1","2":"29","3":"3","4":"9"},{"1":"1","2":"29","3":"4","4":"163"},{"1":"1","2":"29","3":"5","4":"233"}],"options":{"columns":{"min":{},"max":[10],"total":[4]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
-  </script>
 </div>
-<!-- rnb-frame-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudG1wIDwtIHBlcl9wYXJ0aWNpcGFudF9wZXJfa2V5X2RhdGEgJT4lIGdyb3VwX2J5KHBwLCBwaG9uZU5yTGVuZ3RoQmVmb3JlS2V5UHJlc3MpICU+JSBzdW1tYXJpc2UoXCJhZGpNZWFuRGlmZnNcIj1tZWFuKGFkak1lYW5EaWZmcykpXG5gYGAifQ== -->
-<pre class="r"><code>tmp &lt;- per_participant_per_key_data %&gt;% group_by(pp, phoneNrLengthBeforeKeyPress) %&gt;% summarise(&quot;adjMeanDiffs&quot;=mean(adjMeanDiffs))</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiYHN1bW1hcmlzZSgpYCByZWdyb3VwaW5nIG91dHB1dCBieSAncHAnIChvdmVycmlkZSB3aXRoIGAuZ3JvdXBzYCBhcmd1bWVudClcbiJ9 -->
-<pre><code>`summarise()` regrouping output by &#39;pp&#39; (override with `.groups` argument)</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaGVhZCh0bXApXG5gYGAifQ== -->
-<pre class="r"><code>head(tmp)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImdyb3VwZWRfZGYiLCJ0YmxfZGYiLCJ0YmwiLCJkYXRhLmZyYW1lIl0sIm5jb2wiOjMsIm5yb3ciOjZ9LCJyZGYiOiJINHNJQUFBQUFBQUFCbTFRUzA3RE1CQ2RPRWxSSTZnaWRja1pHaWxGYkZoRjBCMGZWVWhJWGVJbVRwTVM3TWh4QmV5NEJKZUE4M1hEb21HYzJGSVZZY21lMy9QTXZQZTRXRjBFcXdBQVhQQ0FnT3VqQzZPYlpUeS9uQU40QkNNSEsyTnQzeEUxN2FBQVp4cldGZisvdGc0bUp1YWZoMWZQbU9oNnN2NTYwaWZKOTcxOTNuN2orVWxZMkgxTU5sZDl6SHM3V01oUEs5bzA2SVJIeVNDamlrYTVwSzlzQUI5TDhSWnh6RGRtUC9LSlQ5dTJ2OE8rRmhRYVhYU1MxTFh4enV0Q2NQWWc3eGpmcU9LYTVVS3lXL2F4bEF5WDZTR25OTnZlTThvWFpaN3JSb2ZCaEJOUnExSndMSkdwRWVTWWd5TUhpWERIOVU3WkxDMTIvR1VXeDVxb1VSWU1HOGNvYm4yM24rbTFwcGR2ZW8xdzdaSXp5N1dpYTFhWllJSUtkZHlqV3BaY1dVVXgyMFJLS0dweFFTb3FtK25Jd2VFUDdrQ3ZDa2tDQUFBPSJ9 -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["pp"],"name":[1],"type":["int"],"align":["right"]},{"label":["phoneNrLengthBeforeKeyPress"],"name":[2],"type":["int"],"align":["right"]},{"label":["adjMeanDiffs"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"0","3":"148.6667"},{"1":"1","2":"1","3":"183.6667"},{"1":"1","2":"2","3":"131.3333"},{"1":"1","2":"3","3":"168.5000"},{"1":"1","2":"4","3":"185.8333"},{"1":"1","2":"5","3":"241.8333"}],"options":{"columns":{"min":{},"max":[10],"total":[3]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGVyX2tleV9kYXRhIDwtIHRtcCAlPiUgZ3JvdXBfYnkocHApICU+JSBzdW1tYXJpc2UoXCJhZGpNZWFuRGlmZnNcIj1tZWFuKGFkak1lYW5EaWZmcykpXG5gYGAifQ== -->
-<pre class="r"><code>per_key_data &lt;- tmp %&gt;% group_by(pp) %&gt;% summarise(&quot;adjMeanDiffs&quot;=mean(adjMeanDiffs))</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiYHN1bW1hcmlzZSgpYCB1bmdyb3VwaW5nIG91dHB1dCAob3ZlcnJpZGUgd2l0aCBgLmdyb3Vwc2AgYXJndW1lbnQpXG4ifQ== -->
-<pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaGVhZChwZXJfa2V5X2RhdGEpXG5gYGAifQ== -->
-<pre class="r"><code>head(per_key_data)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibmNvbCI6MiwibnJvdyI6Nn0sInJkZiI6Ikg0c0lBQUFBQUFBQUJndHlpVERtaXVCaVlHQmdabUJoWUdKZ1pnVXlHZGljQXd5TlRJMFlHRmlZZ0R4R29Bd25pSzRBcWhJR01rQ0N2Q0JsWUVrSW54bUlXWUNZRlNyT0I2SWQwaDUrcUpGblArUlE3Q251ZXJFazFxSHdPNGdTZHlpOHNueUNWeVdyUTBIdUd2TmJoK3NjaWtSdG1vSlBxS0paeUpxWG1KdGFER1FJZ0MyQkNESVZGRUJaUElrcFdiNnBpWGt1bVdscHhXaGFPWXZ5eS9WZzJrRnVaV29BRXYvLy8vK0Zia2R5VG1JeHpBNllJRmRLWWttaVhsb1JVRCtROXc5TkMzdCtRVWxtZmg1UUU1TXcxTWZJbWhtTDBBUUVTdk5BTGtuUlRjNG96Y3ZXTlRRQzJRQU5PZ2FvOHhpaHdRWmpNMEhzWlBvUE5Zc1ZhaFpiYWw1NlpsNHF6UEU1aVVtcE9WQU9IOURMWUIvckZSUmw1cFhBdkFJVUxkWXJ5UzlKaEtualNzN1BnWW1BUGNmd0R3Q1Z1YkJrQmdJQUFBPT0ifQ== -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["pp"],"name":[1],"type":["int"],"align":["right"]},{"label":["adjMeanDiffs"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"183.0606"},{"1":"2","2":"308.5682"},{"1":"3","2":"287.4545"},{"1":"4","2":"285.2909"},{"1":"5","2":"262.8545"},{"1":"6","2":"289.3273"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGVyX2tleV93b196ZXJvcyA9IHBlcl9rZXlfZGF0YVsxOm5yb3cocGVyX2tleV9kYXRhKSxdJGFkak1lYW5EaWZmc1xuYXZlcmFnZV9rZXlfcHJlc3NfaW50ZXJ2YWxsIDwtIHJvdW5kKG1lYW4ocGVyX2tleV93b196ZXJvcyksIDIpXG5hdmVyYWdlX2tleV9wcmVzc19pbnRlcnZhbGxcbmBgYCJ9 -->
-<pre class="r"><code>per_key_wo_zeros = per_key_data[1:nrow(per_key_data),]$adjMeanDiffs
-average_key_press_intervall &lt;- round(mean(per_key_wo_zeros), 2)
-average_key_press_intervall</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDI2My42NVxuIn0= -->
-<pre><code>[1] 263.65</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-</div>
-</div>
-<div id="question-3b" class="section level1">
-<h1>Question 3B</h1>
-<p>We pick 264 by rounding up the calculated interkeypress. This is the average across all participants and therefore, a valid estimation of the parameter.</p>
-<!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpgYGB7cn0NCmxpYnJhcnkoZHBseXIpDQpsaWJyYXJ5KHRpZHlyKQ0KbGlicmFyeShyZXNoYXBlMikNCmxpYnJhcnkoZ2dwbG90MikNCmxpYnJhcnkoZ3JpZEV4dHJhKQ0KYGBgDQoNCiMgQXNzaWdubWVudCAxDQoNCmBgYHtyfQ0Kc2UgPC0gZnVuY3Rpb24oeCkgc2QoeCkvc3FydChsZW5ndGgoeCkpDQprZXlQcmVzc0RhdGFXaXRoTGFuZURldmlhdGlvbiA9IHJlYWQuY3N2KCIuL2tleVByZXNzRGF0YVdpdGhMYW5lRGV2aWF0aW9uLmNzdiIpDQp0YWJsZWRyaWZ0IDwtIHJlYWQuY3N2KCJ0YWJsZU9mRHJpZnRWYWx1ZXNDYWxpYnJhdGlvbi5jc3YiKQ0KdGFibGVkcmlmdCR0cmlhbFRpbWUgPSByb3VuZCh0YWJsZWRyaWZ0JHRyaWFsVGltZS8xMDAwLCAyKQ0KdGFibGVkcmlmdCR0cmlhbCA9IGZhY3Rvcih0YWJsZWRyaWZ0JHRyaWFsKQ0KaGVhZCh0YWJsZWRyaWZ0KQ0KYGBgDQoNCg0KIyMjIFF1ZXN0aW9uIDNBDQoNCmBgYHtyfQ0KZmlsdGVyZWRfZGF0YSA9IGtleVByZXNzRGF0YVdpdGhMYW5lRGV2aWF0aW9uICU+JSBmaWx0ZXIocGFydE9mRXhwZXJpbWVudCA9PSAic2luZ2xlRGlhbGluZzIiKSAlPiUgZmlsdGVyKHR5cGluZ0Vycm9yTWFkZU9uVHJpYWw9PTApICU+JSBmaWx0ZXIoRXZlbnQxID09ICJLZXlwcmVzcyIpDQogaGVhZChmaWx0ZXJlZF9kYXRhKQ0KYGBgDQoNCmBgYHtyfQ0KZmlsdGVyZWRfZGF0YSRkaWZmcyA9IDANCmZpbHRlcmVkX2RhdGEkZGlmZnNbMjpucm93KGZpbHRlcmVkX2RhdGEpXSA9IGRpZmYoZmlsdGVyZWRfZGF0YSR0aW1lUmVsYXRpdmVUb1RyaWFsU3RhcnQpDQpmaWx0ZXJlZF9kYXRhJGRpZmZzW2ZpbHRlcmVkX2RhdGEkcGhvbmVOckxlbmd0aEJlZm9yZUtleVByZXNzID09IDBdID0gZmlsdGVyZWRfZGF0YSR0aW1lUmVsYXRpdmVUb1RyaWFsU3RhcnRbZmlsdGVyZWRfZGF0YSRwaG9uZU5yTGVuZ3RoQmVmb3JlS2V5UHJlc3MgPT0gMF0NCmhlYWQoZmlsdGVyZWRfZGF0YSkNCg0KYGBgDQoNCmBgYHtyfQ0KcGVyX3BhcnRpY2lwYW50X3Blcl9rZXlfZGF0YSA8LSBmaWx0ZXJlZF9kYXRhICU+JSBncm91cF9ieShwcCwgdHJpYWwsIHBob25lTnJMZW5ndGhCZWZvcmVLZXlQcmVzcykgJT4lIHN1bW1hcmlzZSgiYWRqTWVhbkRpZmZzIj1tZWFuKGRpZmZzKSkNCmhlYWQocGVyX3BhcnRpY2lwYW50X3Blcl9rZXlfZGF0YSkNCmBgYA0KDQpgYGB7cn0NCnRtcCA8LSBwZXJfcGFydGljaXBhbnRfcGVyX2tleV9kYXRhICU+JSBncm91cF9ieShwcCwgcGhvbmVOckxlbmd0aEJlZm9yZUtleVByZXNzKSAlPiUgc3VtbWFyaXNlKCJhZGpNZWFuRGlmZnMiPW1lYW4oYWRqTWVhbkRpZmZzKSkNCmhlYWQodG1wKQ0KYGBgDQoNCg0KYGBge3J9DQpwZXJfa2V5X2RhdGEgPC0gdG1wICU+JSBncm91cF9ieShwcCkgJT4lIHN1bW1hcmlzZSgiYWRqTWVhbkRpZmZzIj1tZWFuKGFkak1lYW5EaWZmcykpDQpoZWFkKHBlcl9rZXlfZGF0YSkNCmBgYA0KYGBge3J9DQpwZXJfa2V5X3dvX3plcm9zID0gcGVyX2tleV9kYXRhWzE6bnJvdyhwZXJfa2V5X2RhdGEpLF0kYWRqTWVhbkRpZmZzDQphdmVyYWdlX2tleV9wcmVzc19pbnRlcnZhbGwgPC0gcm91bmQobWVhbihwZXJfa2V5X3dvX3plcm9zKSwgMikNCmF2ZXJhZ2Vfa2V5X3ByZXNzX2ludGVydmFsbA0KYGBgDQojIFF1ZXN0aW9uIDNCDQoNCldlIHBpY2sgMjY0IGJ5IHJvdW5kaW5nIHVwIHRoZSBjYWxjdWxhdGVkIGludGVya2V5cHJlc3MuIFRoaXMgaXMgdGhlIGF2ZXJhZ2UgYWNyb3NzIGFsbCBwYXJ0aWNpcGFudHMgYW5kIHRoZXJlZm9yZSwgYSB2YWxpZCBlc3RpbWF0aW9uIG9mIHRoZSBwYXJhbWV0ZXIuIA0KDQo=</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpgYGB7cn0NCmxpYnJhcnkoZHBseXIpDQpsaWJyYXJ5KHRpZHlyKQ0KbGlicmFyeShyZXNoYXBlMikNCmxpYnJhcnkoZ2dwbG90MikNCmxpYnJhcnkoZ3JpZEV4dHJhKQ0KYGBgDQoNCiMgQXNzaWdubWVudCAxDQoNCmBgYHtyfQ0Kc2UgPC0gZnVuY3Rpb24oeCkgc2QoeCkvc3FydChsZW5ndGgoeCkpDQpjb21wdXRlX2VzdGltYXRvciA8LSBmdW5jdGlvbihkYXRhKXsNCiAgZGF0YSRkaWZmcyA9IDANCiAgZGF0YSRkaWZmc1syOm5yb3coZGF0YSldID0gZGlmZihkYXRhJHRpbWVSZWxhdGl2ZVRvVHJpYWxTdGFydCkNCiAgZGF0YSRkaWZmc1tkYXRhJHBob25lTnJMZW5ndGhCZWZvcmVLZXlQcmVzcyA9PSAwXSA9IGRhdGEkdGltZVJlbGF0aXZlVG9UcmlhbFN0YXJ0W2RhdGEkcGhvbmVOckxlbmd0aEJlZm9yZUtleVByZXNzID09IDBdDQogIHBlcl9wYXJ0aWNpcGFudF9wZXJfa2V5X2RhdGEgPC0gZGF0YSAlPiUgZ3JvdXBfYnkocHAsIHRyaWFsLCBwaG9uZU5yTGVuZ3RoQmVmb3JlS2V5UHJlc3MpICU+JSBzdW1tYXJpc2UoImFkak1lYW5EaWZmcyI9bWVhbihkaWZmcykpDQogIHRtcCA8LSBwZXJfcGFydGljaXBhbnRfcGVyX2tleV9kYXRhICU+JSBncm91cF9ieShwcCwgcGhvbmVOckxlbmd0aEJlZm9yZUtleVByZXNzKSAlPiUgc3VtbWFyaXNlKCJhZGpNZWFuRGlmZnMiPW1lYW4oYWRqTWVhbkRpZmZzKSkNCiAgcGVyX2tleV9kYXRhIDwtIHRtcCAlPiUgZ3JvdXBfYnkocHApICU+JSBzdW1tYXJpc2UoImFkak1lYW5EaWZmcyI9bWVhbihhZGpNZWFuRGlmZnMpKQ0KICBwZXJfa2V5X3dvX3plcm9zID0gcGVyX2tleV9kYXRhWzE6bnJvdyhwZXJfa2V5X2RhdGEpLF0kYWRqTWVhbkRpZmZzDQogIGF2ZXJhZ2Vfa2V5X3ByZXNzX2ludGVydmFsbCA8LSByb3VuZChtZWFuKHBlcl9rZXlfd29femVyb3MpKQ0KICByZXR1cm4oYXZlcmFnZV9rZXlfcHJlc3NfaW50ZXJ2YWxsKQ0KfQ0Ka2V5UHJlc3NEYXRhV2l0aExhbmVEZXZpYXRpb24gPSByZWFkLmNzdigiLi9rZXlQcmVzc0RhdGFXaXRoTGFuZURldmlhdGlvbi5jc3YiKQ0KdGFibGVkcmlmdCA8LSByZWFkLmNzdigidGFibGVPZkRyaWZ0VmFsdWVzQ2FsaWJyYXRpb24uY3N2IikNCnRhYmxlZHJpZnQkdHJpYWxUaW1lID0gcm91bmQodGFibGVkcmlmdCR0cmlhbFRpbWUvMTAwMCwgMikNCnRhYmxlZHJpZnQkdHJpYWwgPSBmYWN0b3IodGFibGVkcmlmdCR0cmlhbCkNCmhlYWQodGFibGVkcmlmdCkNCmBgYA0KDQoNCiMjIyBRdWVzdGlvbiA0QQ0KDQpgYGB7cn0NCmZpbHRlcmVkX2RhdGEgPSBrZXlQcmVzc0RhdGFXaXRoTGFuZURldmlhdGlvbiAlPiUgZmlsdGVyKHBhcnRPZkV4cGVyaW1lbnQgPT0gInNpbmdsZURpYWxpbmcyIikgJT4lIGZpbHRlcih0eXBpbmdFcnJvck1hZGVPblRyaWFsPT0wKSAlPiUgZmlsdGVyKEV2ZW50MSA9PSAiS2V5cHJlc3MiKQ0KIGhlYWQoZmlsdGVyZWRfZGF0YSkNCmBgYA0KDQpgYGB7cn0NCmNvbXB1dGVfZXN0aW1hdG9yKGZpbHRlcmVkX2RhdGEpDQpgYGANCmBgYHtyfQ0KDQpgYGANCg0K</div>
 
 
 
@@ -1953,7 +1877,7 @@ $(document).ready(function () {
 <!-- code folding -->
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("question3.Rmd");
+  window.initializeSourceEmbed("question4.Rmd");
   window.initializeCodeFolding("show" === "show");
 });
 </script>

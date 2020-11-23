@@ -26,29 +26,39 @@ head(tabledrift)
 ### Question 3A
 
 ```{r}
-filtered_data = keyPressDataWithLaneDeviation %>% filter(partOfExperiment == "singleDialing2") %>% filter(typingErrorMadeOnTrial==0) %>% filter(Event1 == "Keypress" | Event1 == "Correct")
+filtered_data = keyPressDataWithLaneDeviation %>% filter(partOfExperiment == "singleDialing2") %>% filter(typingErrorMadeOnTrial==0) %>% filter(Event1 == "Keypress")
  head(filtered_data)
 ```
 
 ```{r}
 filtered_data$diffs = 0
 filtered_data$diffs[2:nrow(filtered_data)] = diff(filtered_data$timeRelativeToTrialStart)
-filtered_data$diffs[filtered_data$phoneNrLengthBeforeKeyPress == 0] = 0
+filtered_data$diffs[filtered_data$phoneNrLengthBeforeKeyPress == 0] = filtered_data$timeRelativeToTrialStart[filtered_data$phoneNrLengthBeforeKeyPress == 0]
 head(filtered_data)
 
 ```
 
 ```{r}
-per_participant_per_key_data <- filtered_data %>% group_by(pp, phoneNrLengthAfterKeyPress) %>% summarise("adjMeanDiffs"=mean(diffs))
+per_participant_per_key_data <- filtered_data %>% group_by(pp, trial, phoneNrLengthBeforeKeyPress) %>% summarise("adjMeanDiffs"=mean(diffs))
 head(per_participant_per_key_data)
 ```
 
 ```{r}
-per_key_data <- filtered_data %>% group_by(phoneNrLengthAfterKeyPress) %>% summarise("adjMeanDiffs"=mean(diffs))
+tmp <- per_participant_per_key_data %>% group_by(pp, phoneNrLengthBeforeKeyPress) %>% summarise("adjMeanDiffs"=mean(adjMeanDiffs))
+head(tmp)
+```
+
+
+```{r}
+per_key_data <- tmp %>% group_by(pp) %>% summarise("adjMeanDiffs"=mean(adjMeanDiffs))
 head(per_key_data)
 ```
 ```{r}
-average_key_press_intervall <- round(mean(per_key_data$adjMeanDiffs), 2)
+per_key_wo_zeros = per_key_data[1:nrow(per_key_data),]$adjMeanDiffs
+average_key_press_intervall <- round(mean(per_key_wo_zeros), 2)
 average_key_press_intervall
 ```
+# Question 3B
+
+We pick 264 by rounding up the calculated interkeypress. This is the average across all participants and therefore, a valid estimation of the parameter. 
 

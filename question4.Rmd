@@ -1,0 +1,50 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(reshape2)
+library(ggplot2)
+library(gridExtra)
+```
+
+# Assignment 1
+
+```{r}
+se <- function(x) sd(x)/sqrt(length(x))
+compute_estimator <- function(data){
+  data$diffs = 0
+  data$diffs[2:nrow(data)] = diff(data$timeRelativeToTrialStart)
+  data$diffs[data$phoneNrLengthBeforeKeyPress == 0] = data$timeRelativeToTrialStart[data$phoneNrLengthBeforeKeyPress == 0]
+  per_participant_per_key_data <- data %>% group_by(pp, trial, phoneNrLengthBeforeKeyPress) %>% summarise("adjMeanDiffs"=mean(diffs))
+  tmp <- per_participant_per_key_data %>% group_by(pp, phoneNrLengthBeforeKeyPress) %>% summarise("adjMeanDiffs"=mean(adjMeanDiffs))
+  per_key_data <- tmp %>% group_by(pp) %>% summarise("adjMeanDiffs"=mean(adjMeanDiffs))
+  per_key_wo_zeros = per_key_data[1:nrow(per_key_data),]$adjMeanDiffs
+  average_key_press_intervall <- round(mean(per_key_wo_zeros))
+  return(average_key_press_intervall)
+}
+keyPressDataWithLaneDeviation = read.csv("./keyPressDataWithLaneDeviation.csv")
+tabledrift <- read.csv("tableOfDriftValuesCalibration.csv")
+tabledrift$trialTime = round(tabledrift$trialTime/1000, 2)
+tabledrift$trial = factor(tabledrift$trial)
+head(tabledrift)
+```
+
+
+### Question 4A
+
+```{r}
+filtered_data = keyPressDataWithLaneDeviation %>% filter(partOfExperiment == "singleDialing2") %>% filter(typingErrorMadeOnTrial==0) %>% filter(Event1 == "Keypress")
+ head(filtered_data)
+```
+
+```{r}
+compute_estimator(filtered_data)
+```
+```{r}
+
+```
+

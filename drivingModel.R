@@ -24,11 +24,13 @@ startingPositionInLane <- 0.27 			#assume that car starts already away from lane
 
 #parameters for deviations in car drift due the simulator environment: See Janssen & Brumby (2010) page 1555
 gaussDeviateMean <- 0
-gaussDeviateSD <- 0.13
+# gaussDeviateSD <- 0.13
+gaussDeviateSD <- 0.06
 
 #When the car is actively contorlled, we calculate a value using equation (1) in Janssen & Brumby (2010). However, some noise is added on top of this equation to account for variation in human behavior. See Janssen & Brumby (2010) page 1555. Also see function "updateSteering" on how this function is used
 gaussDriveNoiseMean <- 0
-gaussDriveNoiseSD <- 0.1	#in meter/sec
+# gaussDriveNoiseSD <- 0.1	#in meter/sec
+gaussDriveNoiseSD <- 0.05	#in meter/sec
 
 timeStepPerDriftUpdate <- 50 ### msec: what is the time interval between two updates of lateral position?
 
@@ -432,3 +434,14 @@ updateSteering <- function(velocity,nrUpdates,startPosLane)
 	
 	
 }
+
+
+###
+# runAllSimpleStrategies(1, "07854325698")
+# runAllSimpleStrategies(5, "07854325698")
+# runAllSimpleStrategies(10, "07854325698")
+# runAllSimpleStrategies(50, "07854325698")
+# runAllSimpleStrategies(100, "07854325698")
+runAllSimpleStrategies(200, "07854325698")
+
+
