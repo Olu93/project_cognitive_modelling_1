@@ -1751,79 +1751,6 @@ summary {
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShkcGx5cilcbmxpYnJhcnkodGlkeXIpXG5saWJyYXJ5KHJlc2hhcGUyKVxubGlicmFyeShnZ3Bsb3QyKVxubGlicmFyeShncmlkRXh0cmEpXG5gYGAifQ== -->
-<pre class="r"><code>library(dplyr)
-library(tidyr)
-library(reshape2)
-library(ggplot2)
-library(gridExtra)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<div id="assignment-1" class="section level1">
-<h1>Assignment 1</h1>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2UgPC0gZnVuY3Rpb24oeCkgc2QoeCkvc3FydChsZW5ndGgoeCkpXG5jb21wdXRlX2VzdGltYXRvciA8LSBmdW5jdGlvbihkYXRhKXtcbiAgZGF0YSRkaWZmcyA9IDBcbiAgZGF0YSRkaWZmc1syOm5yb3coZGF0YSldID0gZGlmZihkYXRhJHRpbWVSZWxhdGl2ZVRvVHJpYWxTdGFydClcbiAgZGF0YSRkaWZmc1tkYXRhJHBob25lTnJMZW5ndGhCZWZvcmVLZXlQcmVzcyA9PSAwXSA9IGRhdGEkdGltZVJlbGF0aXZlVG9UcmlhbFN0YXJ0W2RhdGEkcGhvbmVOckxlbmd0aEJlZm9yZUtleVByZXNzID09IDBdXG4gIHBlcl9wYXJ0aWNpcGFudF9wZXJfa2V5X2RhdGEgPC0gZGF0YSAlPiUgZ3JvdXBfYnkocHAsIHRyaWFsLCBwaG9uZU5yTGVuZ3RoQmVmb3JlS2V5UHJlc3MpICU+JSBzdW1tYXJpc2UoXCJhZGpNZWFuRGlmZnNcIj1tZWFuKGRpZmZzKSlcbiAgdG1wIDwtIHBlcl9wYXJ0aWNpcGFudF9wZXJfa2V5X2RhdGEgJT4lIGdyb3VwX2J5KHBwLCBwaG9uZU5yTGVuZ3RoQmVmb3JlS2V5UHJlc3MpICU+JSBzdW1tYXJpc2UoXCJhZGpNZWFuRGlmZnNcIj1tZWFuKGFkak1lYW5EaWZmcykpXG4gIHBlcl9rZXlfZGF0YSA8LSB0bXAgJT4lIGdyb3VwX2J5KHBwKSAlPiUgc3VtbWFyaXNlKFwiYWRqTWVhbkRpZmZzXCI9bWVhbihhZGpNZWFuRGlmZnMpKVxuICBwZXJfa2V5X3dvX3plcm9zID0gcGVyX2tleV9kYXRhWzE6bnJvdyhwZXJfa2V5X2RhdGEpLF0kYWRqTWVhbkRpZmZzXG4gIGF2ZXJhZ2Vfa2V5X3ByZXNzX2ludGVydmFsbCA8LSByb3VuZChtZWFuKHBlcl9rZXlfd29femVyb3MpKVxuICByZXR1cm4oYXZlcmFnZV9rZXlfcHJlc3NfaW50ZXJ2YWxsKVxufVxua2V5UHJlc3NEYXRhV2l0aExhbmVEZXZpYXRpb24gPSByZWFkLmNzdihcIi4va2V5UHJlc3NEYXRhV2l0aExhbmVEZXZpYXRpb24uY3N2XCIpXG50YWJsZWRyaWZ0IDwtIHJlYWQuY3N2KFwidGFibGVPZkRyaWZ0VmFsdWVzQ2FsaWJyYXRpb24uY3N2XCIpXG50YWJsZWRyaWZ0JHRyaWFsVGltZSA9IHJvdW5kKHRhYmxlZHJpZnQkdHJpYWxUaW1lLzEwMDAsIDIpXG50YWJsZWRyaWZ0JHRyaWFsID0gZmFjdG9yKHRhYmxlZHJpZnQkdHJpYWwpXG5oZWFkKHRhYmxlZHJpZnQpXG5gYGAifQ== -->
-<pre class="r"><code>se &lt;- function(x) sd(x)/sqrt(length(x))
-compute_estimator &lt;- function(data){
-  data$diffs = 0
-  data$diffs[2:nrow(data)] = diff(data$timeRelativeToTrialStart)
-  data$diffs[data$phoneNrLengthBeforeKeyPress == 0] = data$timeRelativeToTrialStart[data$phoneNrLengthBeforeKeyPress == 0]
-  per_participant_per_key_data &lt;- data %&gt;% group_by(pp, trial, phoneNrLengthBeforeKeyPress) %&gt;% summarise(&quot;adjMeanDiffs&quot;=mean(diffs))
-  tmp &lt;- per_participant_per_key_data %&gt;% group_by(pp, phoneNrLengthBeforeKeyPress) %&gt;% summarise(&quot;adjMeanDiffs&quot;=mean(adjMeanDiffs))
-  per_key_data &lt;- tmp %&gt;% group_by(pp) %&gt;% summarise(&quot;adjMeanDiffs&quot;=mean(adjMeanDiffs))
-  per_key_wo_zeros = per_key_data[1:nrow(per_key_data),]$adjMeanDiffs
-  average_key_press_intervall &lt;- round(mean(per_key_wo_zeros))
-  return(average_key_press_intervall)
-}
-keyPressDataWithLaneDeviation = read.csv(&quot;./keyPressDataWithLaneDeviation.csv&quot;)
-tabledrift &lt;- read.csv(&quot;tableOfDriftValuesCalibration.csv&quot;)
-tabledrift$trialTime = round(tabledrift$trialTime/1000, 2)
-tabledrift$trial = factor(tabledrift$trial)
-head(tabledrift)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6MTcsIm5yb3ciOjZ9LCJyZGYiOiJINHNJQUFBQUFBQUFCcVdWVFdnVFFSVEhKOXNrdGRGVWc3MG9DSjVFaEtaTjBqUVZLUnUvRUNGQ2pSYlRLcFJKTW9sTE43dHhkOU5xUkFqaXZSY1BWUzh0RmFFZzNoVWhmbDFzUmNRS2dZS29SejFWVUMrRzFObWRmV095S2sxeFlmai8zcHQ1TSsvTkI1czhsb3I0VWo2RVVBZHlJd0YxZUNnaTc5R1JVRGdhUnNndFVNdEZlN3BNdlV4SDdhUVFvSzNiSEhha2REMlJVQ3JJMGt0elRJMG5US2MvTWkzYjlyVTFCSEZpSlgzcTdkZkZlcnZLNDE3ZDN4TGE5L2xLdXdweDhkbzd0UGZGblh2eDJzcjZoMFBaY1ZPcDdLSGFPRDYvOUpScS9YM2Y3am1xUDRWdEp4OUJYSFUwTVR2aC9YR3plbWJ4UVA5b0dGZVRuc2V1QmFYdlg4cmo0aXp2ZGhYaTBPWS90aTlyekdoWGVkeU44cWNURDNxdWlxdkR4WVdhYjFqOE1uTmgvL2RuTStJMzB5cmVGZXVzUHk3a3JJL0huVjg5dmV0MTUwUzdTbVA4RzlTM1VmOE9xNTlkUkxlaGxjaC9jZXQ4cnNPYkE1N3Qwanh0S3dndDAxZXpIS09OenJ3OFMxOEpWT1A2ZTJ0NVZsNlpUQkZadDNQcWdXVkNBR0dBQ01BQVFCUmdFQ0FHTUFSdzBBWWgxTThweENuTUtjSnBnRk9VMHlDbkdLY2hUbnlOY0wrak9FOUd4anJVeGl2TzRZeWhhcFFheUhIenhjVmI1bmRiZkdqcjg0ajFpUzl0K3cyTWJGMUd3UVVDeXdUNFVVc0ZmdXhGVlU4MThWZ1RqOXZjcGFrR05pUlZTVGtkWTA3SEh5SG5JQkc5U0VqV052eTZRWWcyb3VxU09jUjJiczFqM2VIeXB6VThTWnhPb3VRbGhTUkxpaUlwZWRpNXJDWk5FYzIydWhWVksyQlpLcFBzMmQrbGVneE53aklrYUJsV2IrdU8wY3luZzdCcjVuVVZLbXhmdld4Z3g3cmowSHhaYk9CZ1RzUG1WT2JCdFV6WHFSYk4zT2xrZ3ZtSDhEaUNYWnJEc1oyV1JXZks5bVl1bHBUSjNwQzVRTk1iOGR2cWJlSUFXOUlOaVhsZ1Q5aEdRZlV5VGhPb3Zwc1dhZFVZTEdxU1lrQWwxS3NIRFhweU1NNlhVV1h3c0V2WitBVlV3eGNzR1FjQUFBPT0ifQ== -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["time"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["posX"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["posY"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["posZ"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["rotationX"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["rotationY"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["rotationZ"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["rotationW"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["speed"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["steerPosition"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["gasPosition"],"name":[11],"type":["int"],"align":["right"]},{"label":["brakePosition"],"name":[12],"type":["int"],"align":["right"]},{"label":["engineRunning"],"name":[13],"type":["chr"],"align":["left"]},{"label":["driver"],"name":[14],"type":["chr"],"align":["left"]},{"label":["normalizedTime"],"name":[15],"type":["int"],"align":["right"]},{"label":["trial"],"name":[16],"type":["fctr"],"align":["left"]},{"label":["trialTime"],"name":[17],"type":["dbl"],"align":["right"]}],"data":[{"1":"1.478086e+12","2":"0.008","3":"0.224","4":"24400.00","5":"-0.0013","6":"-5e-04","7":"0","8":"1","9":"0.01","10":"0.0017","11":"0","12":"0","13":"true","14":"A","15":"51873","16":"1","17":"0.00","_rn_":"1"},{"1":"1.478086e+12","2":"0.008","3":"0.224","4":"24400.00","5":"-0.0012","6":"-5e-04","7":"0","8":"1","9":"0.41","10":"0.0017","11":"0","12":"0","13":"true","14":"A","15":"51923","16":"1","17":"0.05","_rn_":"2"},{"1":"1.478086e+12","2":"0.008","3":"0.224","4":"24399.99","5":"-0.0011","6":"-5e-04","7":"0","8":"1","9":"0.83","10":"0.0017","11":"0","12":"0","13":"true","14":"A","15":"51973","16":"1","17":"0.10","_rn_":"3"},{"1":"1.478086e+12","2":"0.008","3":"0.224","4":"24399.97","5":"-0.0011","6":"-5e-04","7":"0","8":"1","9":"1.29","10":"0.0017","11":"0","12":"0","13":"true","14":"A","15":"52023","16":"1","17":"0.15","_rn_":"4"},{"1":"1.478086e+12","2":"0.008","3":"0.224","4":"24399.95","5":"-0.0011","6":"-5e-04","7":"0","8":"1","9":"1.78","10":"0.0017","11":"0","12":"0","13":"true","14":"A","15":"52069","16":"1","17":"0.20","_rn_":"5"},{"1":"1.478086e+12","2":"0.008","3":"0.224","4":"24399.92","5":"-0.0011","6":"-5e-04","7":"0","8":"1","9":"2.30","10":"0.0017","11":"0","12":"0","13":"true","14":"A","15":"52120","16":"1","17":"0.25","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10],"total":[17]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<div id="question-4a" class="section level3">
-<h3>Question 4A</h3>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmlsdGVyZWRfZGF0YSA9IGtleVByZXNzRGF0YVdpdGhMYW5lRGV2aWF0aW9uICU+JSBmaWx0ZXIocGFydE9mRXhwZXJpbWVudCA9PSBcInNpbmdsZURpYWxpbmcyXCIpICU+JSBmaWx0ZXIodHlwaW5nRXJyb3JNYWRlT25UcmlhbD09MCkgJT4lIGZpbHRlcihFdmVudDEgPT0gXCJLZXlwcmVzc1wiKVxuIGhlYWQoZmlsdGVyZWRfZGF0YSlcbmBgYCJ9 -->
-<pre class="r"><code>filtered_data = keyPressDataWithLaneDeviation %&gt;% filter(partOfExperiment == &quot;singleDialing2&quot;) %&gt;% filter(typingErrorMadeOnTrial==0) %&gt;% filter(Event1 == &quot;Keypress&quot;)
- head(filtered_data)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6MTQsIm5yb3ciOjZ9LCJyZGYiOiJINHNJQUFBQUFBQUFCcjFVVFc3VFFCU2VPbkZDTFJvcUtnRXFRa0ppSGN0MmZoeGxSOXVBb0g5Ulc2RnVwOG1rc1hCbXJQRWt0Q3U2NEFDY2dRdHdCVmJjZ1Z2MEJJVTM5a3l3RFRVc0VKWkc3Mi9lOC92NTVoM3RuTGFzVXdzaFZFRlZaS0NLQ1N5cWJROWRyK01oVkRWQVdnSExxcVFYY0dzRG1BYWNkWGxOR1I1Nmp0dHR1bTdUZFo2NlRyL2w5WjEydjl2cGxKcTc3Vkt6NzVXYWUyNlp1ZGN1Q2Q3cE83NFBwcldrQWxuZTcwKzJ3anU3NURMaUpJNy91WnovRDlLdGRoUmpPTDdpS283ZlUyd1ZXTjFjVS9MdFFwajZ3WHgyUnJpVEYvMjgyTXVMbmJ6WXpvdXRUTU9lM0hLMC9iWXZtMkVqRHVoNVNIWUNIQUxqL1dmdG4rRnJsOFBYTG9ldlhRNWZ1eHkrZGpsODdSUys4aEhXdHVZZnZyMThmWTBTdW51VjBqMms2TWVVdnZtU1VqSkUydS85dFdUcm4vNldGcVlybjRmY0RKVUVzQURDakYybWZSL09KcHhuY0w3QzljOG8vOXlLdnJYQ3BqRXBuaEg5TmhvYTlTS1lFZjBzb2toeHRjR0NVS0hiZVhjNFpaUWM4R1AyQXZQY0RUMFBVM0JBZ1JJZWlNc0lBREhnblBGOVBDYUg5Q1JqWFk4d0Y0ZVR3VVZFT1B5YUNxVmZrNGxzTTdvZ1hKQ3hVbHBTK1lydXgyU2tjd2t4SlVNV0J5SmdWT2tlUjJsK2U0U2VpK2tXbVRCT1lCVU1NNnZoa1F4MFJFSXNnZ1U1WVVsQ3h3SXlVZmJOWElqbkUwSDRNa0sraTZ1Y3ZiTjFKMlg3amF0MGZMKzBleFRpNVNyU1NtdU1CYlluSFB4QnVpbTQxRmtreXdJblkwTU5NZXU4d2d1S2UzTXFNeGszUjlNNWZkdVVDOHRDUDNmdG1xSzFETjlJZjJsOFY2Rk1QVThvUEtBYUNXYUl6NGllV0FNcVRncTJJeDRzNTJXQk5yWUZFOHZKV2lNV2FrMVNHN3I1QVhza3k5Z0pCd0FBIn0= -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["time"],"name":[1],"type":["chr"],"align":["left"]},{"label":["pp"],"name":[2],"type":["int"],"align":["right"]},{"label":["Event1"],"name":[3],"type":["chr"],"align":["left"]},{"label":["PhoneNrSoFar"],"name":[4],"type":["chr"],"align":["left"]},{"label":["Event2"],"name":[5],"type":["chr"],"align":["left"]},{"label":["trial"],"name":[6],"type":["int"],"align":["right"]},{"label":["typingErrorMadeOnTrial"],"name":[7],"type":["int"],"align":["right"]},{"label":["partOfExperiment"],"name":[8],"type":["chr"],"align":["left"]},{"label":["timeConverted"],"name":[9],"type":["chr"],"align":["left"]},{"label":["timeInMsec"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["lanePosition"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["phoneNrLengthBeforeKeyPress"],"name":[12],"type":["int"],"align":["right"]},{"label":["timeRelativeToTrialStart"],"name":[13],"type":["int"],"align":["right"]},{"label":["phoneNrLengthAfterKeyPress"],"name":[14],"type":["int"],"align":["right"]}],"data":[{"1":"2016-11-10 10:32:04:655","2":"1","3":"Keypress","4":"","5":"Number0","6":"29","7":"0","8":"singleDialing2","9":"2016-11-10 10:32:04.655","10":"1.47877e+12","11":"NA","12":"0","13":"9","14":"1","_rn_":"1"},{"1":"2016-11-10 10:32:04:664","2":"1","3":"Keypress","4":"0","5":"Number7","6":"29","7":"0","8":"singleDialing2","9":"2016-11-10 10:32:04.664","10":"1.47877e+12","11":"NA","12":"1","13":"18","14":"2","_rn_":"2"},{"1":"2016-11-10 10:32:04:672","2":"1","3":"Keypress","4":"07","5":"Number8","6":"29","7":"0","8":"singleDialing2","9":"2016-11-10 10:32:04.672","10":"1.47877e+12","11":"NA","12":"2","13":"26","14":"3","_rn_":"3"},{"1":"2016-11-10 10:32:04:681","2":"1","3":"Keypress","4":"078","5":"Number5","6":"29","7":"0","8":"singleDialing2","9":"2016-11-10 10:32:04.681","10":"1.47877e+12","11":"NA","12":"3","13":"35","14":"4","_rn_":"4"},{"1":"2016-11-10 10:32:04:844","2":"1","3":"Keypress","4":"0785","5":"Number4","6":"29","7":"0","8":"singleDialing2","9":"2016-11-10 10:32:04.844","10":"1.47877e+12","11":"NA","12":"4","13":"198","14":"5","_rn_":"5"},{"1":"2016-11-10 10:32:05:077","2":"1","3":"Keypress","4":"07854","5":"Number3","6":"29","7":"0","8":"singleDialing2","9":"2016-11-10 10:32:05.077","10":"1.47877e+12","11":"NA","12":"5","13":"431","14":"6","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10],"total":[14]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29tcHV0ZV9lc3RpbWF0b3IoZmlsdGVyZWRfZGF0YSlcbmBgYCJ9 -->
-<pre class="r"><code>compute_estimator(filtered_data)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiYHN1bW1hcmlzZSgpYCByZWdyb3VwaW5nIG91dHB1dCBieSAncHAnLCAndHJpYWwnIChvdmVycmlkZSB3aXRoIGAuZ3JvdXBzYCBhcmd1bWVudClcbmBzdW1tYXJpc2UoKWAgcmVncm91cGluZyBvdXRwdXQgYnkgJ3BwJyAob3ZlcnJpZGUgd2l0aCBgLmdyb3Vwc2AgYXJndW1lbnQpXG5gc3VtbWFyaXNlKClgIHVuZ3JvdXBpbmcgb3V0cHV0IChvdmVycmlkZSB3aXRoIGAuZ3JvdXBzYCBhcmd1bWVudClcbiJ9 -->
-<pre><code>`summarise()` regrouping output by &#39;pp&#39;, &#39;trial&#39; (override with `.groups` argument)
-`summarise()` regrouping output by &#39;pp&#39; (override with `.groups` argument)
-`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDI2NFxuIn0= -->
-<pre><code>[1] 264</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc291cmNlKFwiZHJpdmluZ01vZGVsLlJcIilcblxuYGBgIn0= -->
 <pre class="r"><code>source(&quot;drivingModel.R&quot;)
 </code></pre>
@@ -1835,10 +1762,199 @@ es gibt kein Paket namens 㤼㸱gtools㤼㸲</code></pre>
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
-</div>
-</div>
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2VuZXJhdGVDaHVua1N0cmF0ZWdpZXMgPC0gZnVuY3Rpb24ocGhvbmVOdW1iZXJMZW5ndGhzLCBudW1fc3RyYXRlZ2llcyl7XG4gIGFsbF9jaHVua3MgPSAxOnBob25lTnVtYmVyTGVuZ3Roc1xuICBub19jaHVua3MgPSBjKClcbiAgbmF0dXJhbF91ayA9IGMoMSw2KVxuICBuYXR1cmFsX3VzID0gYygxLDQsNylcbiAgcmFuZF9jaHVua19zd2l0Y2hfbnVtYmVycyA9IHJiaW5vbSg1LCBwaG9uZU51bWJlckxlbmd0aHMtMSwgMy8xMCkgKyAxXG4gIHN0cmF0ZWdpZXMgPSBsaXN0KGFsbF9jaHVua3MsIG5vX2NodW5rcywgbmF0dXJhbF91cywgbmF0dXJhbF91aylcbiAgIyBUT0RPOiBFeGNsdWRlIHJlcGVhdGluZyBzdHJhdGVnaWVzXG4gICMgVE9ETzogVXNlIHdoaWxlIHRvIGZpbGwgaXQgdXBcbiAgZm9yIChudW1fY2h1bWtzIGluIHJhbmRfY2h1bmtfc3dpdGNoX251bWJlcnMpe1xuICAgICMgcHJpbnQoXCJkZGRkZGRkZGRkZGRkZGRkZGRkZGRcIilcbiAgICAjIHByaW50KGxlbmd0aChzdHJhdGVnaWVzKSlcbiAgICBjaHVua19wb3MgPSBzb3J0KHNhbXBsZSgxOnBob25lTnVtYmVyTGVuZ3Rocywgc2l6ZT1udW1fY2h1bWtzLCByZXBsYWNlID0gRkFMU0UpKVxuICAgICMgcHJpbnQoY2h1bmtfcG9zKVxuICAgIHN0cmF0ZWdpZXNbbGVuZ3RoKHN0cmF0ZWdpZXMpICsgMV0gPC0gbGlzdChjaHVua19wb3MpXG4gIH1cbiAgc3RyYXRlZ2llc1xufVxuXG5wcmludChnZW5lcmF0ZUNodW5rU3RyYXRlZ2llcygxMSkpXG5gYGAifQ== -->
+<pre class="r"><code>generateChunkStrategies &lt;- function(phoneNumberLengths, num_strategies){
+  all_chunks = 1:phoneNumberLengths
+  no_chunks = c()
+  natural_uk = c(1,6)
+  natural_us = c(1,4,7)
+  rand_chunk_switch_numbers = rbinom(5, phoneNumberLengths-1, 3/10) + 1
+  strategies = list(all_chunks, no_chunks, natural_us, natural_uk)
+  # TODO: Exclude repeating strategies
+  # TODO: Use while to fill it up
+  for (num_chumks in rand_chunk_switch_numbers){
+    # print(&quot;ddddddddddddddddddddd&quot;)
+    # print(length(strategies))
+    chunk_pos = sort(sample(1:phoneNumberLengths, size=num_chumks, replace = FALSE))
+    # print(chunk_pos)
+    strategies[length(strategies) + 1] &lt;- list(chunk_pos)
+  }
+  strategies
+}
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpgYGB7cn0NCmxpYnJhcnkoZHBseXIpDQpsaWJyYXJ5KHRpZHlyKQ0KbGlicmFyeShyZXNoYXBlMikNCmxpYnJhcnkoZ2dwbG90MikNCmxpYnJhcnkoZ3JpZEV4dHJhKQ0KYGBgDQoNCiMgQXNzaWdubWVudCAxDQoNCmBgYHtyfQ0Kc2UgPC0gZnVuY3Rpb24oeCkgc2QoeCkvc3FydChsZW5ndGgoeCkpDQpjb21wdXRlX2VzdGltYXRvciA8LSBmdW5jdGlvbihkYXRhKXsNCiAgZGF0YSRkaWZmcyA9IDANCiAgZGF0YSRkaWZmc1syOm5yb3coZGF0YSldID0gZGlmZihkYXRhJHRpbWVSZWxhdGl2ZVRvVHJpYWxTdGFydCkNCiAgZGF0YSRkaWZmc1tkYXRhJHBob25lTnJMZW5ndGhCZWZvcmVLZXlQcmVzcyA9PSAwXSA9IGRhdGEkdGltZVJlbGF0aXZlVG9UcmlhbFN0YXJ0W2RhdGEkcGhvbmVOckxlbmd0aEJlZm9yZUtleVByZXNzID09IDBdDQogIHBlcl9wYXJ0aWNpcGFudF9wZXJfa2V5X2RhdGEgPC0gZGF0YSAlPiUgZ3JvdXBfYnkocHAsIHRyaWFsLCBwaG9uZU5yTGVuZ3RoQmVmb3JlS2V5UHJlc3MpICU+JSBzdW1tYXJpc2UoImFkak1lYW5EaWZmcyI9bWVhbihkaWZmcykpDQogIHRtcCA8LSBwZXJfcGFydGljaXBhbnRfcGVyX2tleV9kYXRhICU+JSBncm91cF9ieShwcCwgcGhvbmVOckxlbmd0aEJlZm9yZUtleVByZXNzKSAlPiUgc3VtbWFyaXNlKCJhZGpNZWFuRGlmZnMiPW1lYW4oYWRqTWVhbkRpZmZzKSkNCiAgcGVyX2tleV9kYXRhIDwtIHRtcCAlPiUgZ3JvdXBfYnkocHApICU+JSBzdW1tYXJpc2UoImFkak1lYW5EaWZmcyI9bWVhbihhZGpNZWFuRGlmZnMpKQ0KICBwZXJfa2V5X3dvX3plcm9zID0gcGVyX2tleV9kYXRhWzE6bnJvdyhwZXJfa2V5X2RhdGEpLF0kYWRqTWVhbkRpZmZzDQogIGF2ZXJhZ2Vfa2V5X3ByZXNzX2ludGVydmFsbCA8LSByb3VuZChtZWFuKHBlcl9rZXlfd29femVyb3MpKQ0KICByZXR1cm4oYXZlcmFnZV9rZXlfcHJlc3NfaW50ZXJ2YWxsKQ0KfQ0Ka2V5UHJlc3NEYXRhV2l0aExhbmVEZXZpYXRpb24gPSByZWFkLmNzdigiLi9rZXlQcmVzc0RhdGFXaXRoTGFuZURldmlhdGlvbi5jc3YiKQ0KdGFibGVkcmlmdCA8LSByZWFkLmNzdigidGFibGVPZkRyaWZ0VmFsdWVzQ2FsaWJyYXRpb24uY3N2IikNCnRhYmxlZHJpZnQkdHJpYWxUaW1lID0gcm91bmQodGFibGVkcmlmdCR0cmlhbFRpbWUvMTAwMCwgMikNCnRhYmxlZHJpZnQkdHJpYWwgPSBmYWN0b3IodGFibGVkcmlmdCR0cmlhbCkNCmhlYWQodGFibGVkcmlmdCkNCmBgYA0KDQoNCiMjIyBRdWVzdGlvbiA0QQ0KDQpgYGB7cn0NCmZpbHRlcmVkX2RhdGEgPSBrZXlQcmVzc0RhdGFXaXRoTGFuZURldmlhdGlvbiAlPiUgZmlsdGVyKHBhcnRPZkV4cGVyaW1lbnQgPT0gInNpbmdsZURpYWxpbmcyIikgJT4lIGZpbHRlcih0eXBpbmdFcnJvck1hZGVPblRyaWFsPT0wKSAlPiUgZmlsdGVyKEV2ZW50MSA9PSAiS2V5cHJlc3MiKQ0KIGhlYWQoZmlsdGVyZWRfZGF0YSkNCmBgYA0KDQpgYGB7cn0NCmNvbXB1dGVfZXN0aW1hdG9yKGZpbHRlcmVkX2RhdGEpDQpgYGANCmBgYHtyfQ0Kc291cmNlKCJkcml2aW5nTW9kZWwuUiIpDQpydW5BbGxTaW1wbGVTdHJhdGVnaWVzKDEsICIwNzg1NDMyNTY5OCIpDQpydW5BbGxTaW1wbGVTdHJhdGVnaWVzKDUsICIwNzg1NDMyNTY5OCIpDQpydW5BbGxTaW1wbGVTdHJhdGVnaWVzKDEwLCAiMDc4NTQzMjU2OTgiKQ0KcnVuQWxsU2ltcGxlU3RyYXRlZ2llcyg1MCwgIjA3ODU0MzI1Njk4IikNCnJ1bkFsbFNpbXBsZVN0cmF0ZWdpZXMoMTAwLCAiMDc4NTQzMjU2OTgiKQ0KcnVuQWxsU2ltcGxlU3RyYXRlZ2llcygyMDAsICIwNzg1NDMyNTY5OCIpDQpgYGANCg0K</div>
+print(generateChunkStrategies(11))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiW1sxXV1cbiBbMV0gIDEgIDIgIDMgIDQgIDUgIDYgIDcgIDggIDkgMTAgMTFcblxuW1syXV1cbk5VTExcblxuW1szXV1cblsxXSAxIDQgN1xuXG5bWzRdXVxuWzFdIDEgNlxuXG5bWzVdXVxuWzFdICAxICAyICA0IDEwXG5cbltbNl1dXG5bMV0gNSA2IDcgOCA5XG5cbltbN11dXG5bMV0gMyA5XG5cbltbOF1dXG5bMV0gMSAyIDMgNSA3XG5cbltbOV1dXG5bMV0gIDMgIDkgMTFcbiJ9 -->
+<pre><code>[[1]]
+ [1]  1  2  3  4  5  6  7  8  9 10 11
+
+[[2]]
+NULL
+
+[[3]]
+[1] 1 4 7
+
+[[4]]
+[1] 1 6
+
+[[5]]
+[1]  1  2  4 10
+
+[[6]]
+[1] 5 6 7 8 9
+
+[[7]]
+[1] 3 9
+
+[[8]]
+[1] 1 2 3 5 7
+
+[[9]]
+[1]  3  9 11</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucnVuQWxsU2ltcGxlU3RyYXRlZ2llcyA8LSBmdW5jdGlvbihuclNpbXVsYXRpb25zLHBob25lTnVtYmVyKVxuYGBgIn0= -->
+<pre class="r"><code>runAllSimpleStrategies &lt;- function(nrSimulations,phoneNumber)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZyBtZXNzYWdlOlxuSW4gcmVhZENoYXIoZmlsZSwgc2l6ZSwgVFJVRSkgOiB0cnVuY2F0aW5nIHN0cmluZyB3aXRoIGVtYmVkZGVkIG51bHNcbiJ9 -->
+<pre><code>Warning message:
+In readChar(file, size, TRUE) : truncating string with embedded nuls</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxue1xuXHRcblx0XG5cdG5vcm1hbFBob25lU3RydWN0dXJlIDwtIGMoMSw2KSAgIyMjIGluZGljYXRlIGF0IHdoYXQgZGlnaXQgcG9zaXRpb25zIGEgY2h1bmsgbmVlZHMgdG8gYmUgcmV0cmlldmVkICgxc3QgYW5kIDZ0aCBkaWdpdClcblx0cGhvbmVTdHJpbmdMZW5ndGggPC0gMTEgICAjIyMgaG93IG1hbnkgZGlnaXRzIGRvZXMgdGhlIG51bWJlciBoYXZlP1xuXHRcblxuXHQjIyMgdmVjdG9ycyB0aGF0IHdpbGwgY29udGFpbiBvdXRwdXQgb2YgdGhlIHNpbXVsYXRpb24uIFRoZXNlIGFyZSBsYXRlciB1c2VkIHRvIGNyZWF0ZSAxIHRhYmxlIHdpdGggYWxsIHZhbHVlc1xuXHRrZXlwcmVzc2VzIDwtIGMoKVxuXHR0aW1lcyA8LSBjKClcblx0ZGV2aWF0aW9ucyA8LSBjKClcblx0c3RyYXRzIDwtIGMoKVxuXHRzdGVlcnMgPC0gYygpXHRcblx0Y2h1bmtTdHJhdGVnaWVzIDwtIGdlbmVyYXRlQ2h1bmtTdHJhdGVnaWVzKHBob25lU3RyaW5nTGVuZ3RoLCA1KVxuXG5cdCMjIyBpdGVyYXRlIHRocm91Z2ggYWxsIHN0cmF0ZWdpZXNcblx0IyMgaW4gdGhpcyBzaW1wbGUgbW9kZWwgd2UgYXNzdW1lIHRoYXQgYSBwYXJ0aWNpcGFudCB1c2VzIGEgY29uc2lzdGVudCBzdHJhdGVneSB0aHJvdWdob3V0IHRoZSB0cmlhbC4gVGhhdCBpcywgdGhleSBvbmx5IHR5cGUgZWFjaCB0aW1lIDEgZGlnaXQsIG9yIHR5cGUgMiBkaWdpdHMgYXQgYSB0aW1lLCBvciB0eXBlIDMgZGlnaXRzIGF0IGEgdGltZSAoaS5lLiwgYWxsIHBvc3NpYmxlIHdheXMgb2YgMTpwaG9uZVN0cmluZ0xlbmd0aDogMSwgMiwzLDQsIC4uLjExKVxuXHRmb3IgKGNodW5rU3RyYXRlZ3lJZHggaW4gMTogbGVuZ3RoKGNodW5rU3RyYXRlZ2llcykpXG5cdHtcblx0XHQjIyBxdWljayB3YXkgb2YgY2FsY3VsYXRpbmcgcG9zaXRpb25zIHRvIGludGVybGVhdmU6IHJlcGVhdCBzdHJhdGVneSAmIG11bHRpcGx5IHdpdGggcG9zaXRpb24gaW4gdmVjdG9yIChlLmcuLCAzMzMqMTIzID0gMzY5IHRoaXMgbWVhbnM6IHlvdSBpbnRlcmxlYXZlIEJFRk9SRSBldmVyeSAzcmQgZGlnaXQgKDMzMyksIGFuZCB0aGVyZSBhcmUgMyBwb3NpdGlvbnMgdG8gaW50ZXJsZWF2ZSAoMXN0LCAybmQsIDNyZCwgb3IgMTIzKS4gVGhlcmVmb3JlIHlvdSBpbnRlcmxlYXZlIEJFRk9SRSBkaWdpdHMgMyAoMyoxKSwgNiAoMyoyKSwgYW5kIDkgKDMqMykpXG5cdFx0XG5cdCAgc3RyID0gc3ByaW50ZihcIj09PT09PT09PT09PSBSb3VuZDogJWRcIiwgY2h1bmtTdHJhdGVneUlkeClcblx0ICB3cml0ZUxpbmVzKHN0cilcblx0XHRzdHJhdGVneSA8LSB1bmxpc3QoY2h1bmtTdHJhdGVnaWVzW2NodW5rU3RyYXRlZ3lJZHhdKVxuXHRcdGNhdChzdHJhdGVneSlcblx0XHQjIyMgcmVtb3ZlIGxhc3QgZGlnaXQsIGFzIGRyaXZlciBkb2VzIG5vdCBpbnRlcmxlYXZlIGFmdGVyIHR5cGluZyB0aGUgbGFzdCBkaWdpdCAodGhleSBhcmUgZG9uZSB3aXRoIHRoZSB0cmlhbCA6LSkgIClcblx0XHRzdHJhdGVneSA8LSBzdHJhdGVneVtzdHJhdGVneSAhPSBwaG9uZVN0cmluZ0xlbmd0aF1cblx0XHRcblxuXHRcdGxvY1N0ZWVyVGltZU9wdGlvbnMgPC0gc3RlZXJpbmdUaW1lT3B0aW9uc1xuXHRcdGlmIChsZW5ndGgoc3RyYXRlZ3kpID09IDApXG5cdFx0e1xuXHRcdFx0bG9jU3RlZXJUaW1lT3B0aW9ucyA8LSBjKDApXG5cdFx0fVxuXG5cblxuXHRcdCMjIyBub3cgcnVuIGEgdHJpYWwgKHJ1bk9uZVRyaWFsKSBmb3IgYWxsIGNvbWJpbmF0aW9ucyBvZiBob3cgZnJlcXVlbnRseSB5b3UgdXBkYXRlIHRoZSBzdGVlcmluZyB3aGVuIHlvdSBhcmUgc3RlZXJpbmcgKGxvY1N0ZWVyVGltZU9wdGlvbnMpIGFuZCBmb3IgdGhlIG51YmVyIG9mIHNpbXVsYXRpb25zIHRoYXQgeW91IHdhbnQgdG8gcnVuIGZvciBlYWNoIHN0cmF0ZWd5IChuclNpbXVsYXRpb25zKVxuXHRcdGZvciAoc3RlZXJUaW1lcyBpbiBsb2NTdGVlclRpbWVPcHRpb25zKVxuXHRcdHtcblx0XHRcdGZvciAoaSBpbiAxOm5yU2ltdWxhdGlvbnMpXG5cdFx0XHR7XG5cblx0XHRcdFx0IyMjIHJ1biB0aGUgc2ltdWxhdGlvbiBhbmQgc3RvcmUgdGhlIG91dHB1dCBpbiBhIHRhYmxlXG5cdFx0XHRcdGxvY1RhYiA8LSBydW5PbmVUcmlhbChzdHJhdGVneSwgc3RlZXJUaW1lcyxub3JtYWxQaG9uZVN0cnVjdHVyZSxwaG9uZVN0cmluZ0xlbmd0aCxwaG9uZU51bWJlcilcblx0XG5cdFx0XHRcdCMjb25seSBsb29rIGF0IHJvd3Mgd2hlcmUgdGhlcmUgaXMgYSBrZXlwcmVzc1xuXHRcdFx0XHRsb2NUYWIgPC0gbG9jVGFiW2xvY1RhYiRldmVudHMgPT0gXCJrZXlwcmVzc1wiLF1cblx0XHRcblx0XHRcdFx0IyMjIGFkZCB0aGUgcmVsZXZhbnQgZGF0YSBwb2ludHMgdG8gdmFyaWFibGVzIHRoYXQgYXJlIHN0b3JlZCBpbiBhIGZpbmFsIHRhYmxlXG5cdFx0XHRcdGtleXByZXNzZXMgPC0gYyhrZXlwcmVzc2VzLDE6bnJvdyhsb2NUYWIpKVxuXHRcdFx0XHR0aW1lcyA8LSBjKHRpbWVzLGxvY1RhYiR0aW1lcylcblx0XHRcdFx0ZGV2aWF0aW9ucyA8LSBjKGRldmlhdGlvbnMsbG9jVGFiJGRyaWZ0cylcblx0XHRcdFx0c3RyYXRzIDwtIGMoc3RyYXRzLCByZXAocGFzdGUoc3RyYXRlZ3ksIGNvbGxhcHNlID0gXCIgXCIpLCBucm93KGxvY1RhYikpKVxuXHRcdFx0XHRzdGVlcnMgPC0gYyhzdGVlcnMscmVwKHN0ZWVyVGltZXMsbnJvdyhsb2NUYWIpKSlcblx0XHRcblx0XHRcdH1cblx0XHR9I2VuZCBvZiBmb3Igc3RlZXJUaW1lc1x0XG5cblx0fSMjZW5kIG9mIGZvciBuciBzdHJhdGVnaWVzXG5cdFxuXHRcblx0IyMjIG5vdyBtYWtlIGEgbmV3IHRhYmxlIGJhc2VkIG9uIGFsbCB0aGUgZGF0YSB0aGF0IHdhcyBjb2xsZWN0ZWRcblx0dGFibGVBbGxTYW1wbGVzIDwtIGRhdGEuZnJhbWUoa2V5cHJlc3Nlcyx0aW1lcyxkZXZpYXRpb25zLHN0cmF0cyxzdGVlcnMpXG5cdHRhYmxlQWxsU2FtcGxlcyRzdHJhdHMgPSBmYWN0b3IodGFibGVBbGxTYW1wbGVzJHN0cmF0cylcblx0XG5cdFZpZXcodGFibGVBbGxTYW1wbGVzKVxuXHQjIyMjIEluIHRoZSB0YWJsZSB3ZSBjb2xsZWN0ZWQgZGF0YSBmb3IgbXVsdGlwbGUgc2ltdWxhdGlvbnMgcGVyIHN0cmF0ZWd5LiBOb3cgd2Ugd2FudCB0byBrbm93IHRoZSBhdmVyYWdlIHBlcmZvcm1hbmUgb2YgZWFjaCBzdHJhdGVneS5cblx0IyMjIyBUaGVzZSBhc3BlY3RzIGFyZSBjYWxjdWxhdGVkIHVzaW5nIHRoZSBcImFnZ3JlZ2F0ZVwiIGZ1bmN0aW9uXG5cdFxuXHRcblx0IyMgY2FsY3VsYXRlIGF2ZXJhZ2UgZGV2aWF0aW9uIGF0IGVhY2gga2V5cHJlc3MgKGtleXByZXNzZXMpLCBmb3IgZWFjaCB1bmlxdWUgc3RyYXRlZ3kgdmFyaWF0aW9uIChzdHJhdHMgYW5kIHN0ZWVycylcblx0YWdyUmVzdWx0cyA8LSB3aXRoKHRhYmxlQWxsU2FtcGxlcyxhZ2dyZWdhdGUoZGV2aWF0aW9ucyxsaXN0KGtleXByZXNzZXM9a2V5cHJlc3Nlcywgc3RyYXRzPSBzdHJhdHMsIHN0ZWVycz0gc3RlZXJzKSxtZWFuKSlcblx0YWdyUmVzdWx0cyRkZXYgPC0gYWdyUmVzdWx0cyR4XG5cdFxuXHRcblx0IyMjIGFsc28gY2FsY3VsYXRlIHRoZSB0aW1lIGludGVydmFsXG5cdGFnclJlc3VsdHMkdGltZXMgPC0gd2l0aCh0YWJsZUFsbFNhbXBsZXMsYWdncmVnYXRlKHRpbWVzLGxpc3Qoa2V5cHJlc3Nlcz1rZXlwcmVzc2VzLCBzdHJhdHM9IHN0cmF0cywgc3RlZXJzPSBzdGVlcnMpLG1lYW4pKSR4XG5cdFx0XG5cdFxuXHQjIyNub3cgY2FsY3VsYXRlIG1lYW4gZHJpZnQgYWNyb3NzIHRoZSB0cmlhbFxuXHRhZ3JSZXN1bHRzTWVhbkRyaWZ0IDwtICB3aXRoKGFnclJlc3VsdHMsYWdncmVnYXRlKGRldixsaXN0KHN0cmF0cz0gc3RyYXRzLCBzdGVlcnM9IHN0ZWVycyksbWVhbikpXG5cdGFnclJlc3VsdHNNZWFuRHJpZnQkZGV2IDwtIGFnclJlc3VsdHNNZWFuRHJpZnQkeFxuXHRcblx0IyMjIGFuZCBtZWFuIHRyaWFsIHRpbWVcblx0YWdyUmVzdWx0c01lYW5EcmlmdCRUcmlhbFRpbWUgPC0gIHdpdGgoYWdyUmVzdWx0c1thZ3JSZXN1bHRzJGtleXByZXNzZXMgPT0xMSxdLGFnZ3JlZ2F0ZSh0aW1lcyxsaXN0KCBzdHJhdHM9IHN0cmF0cywgc3RlZXJzPSBzdGVlcnMpLG1lYW4pKSR4XHRcblx0XG5cdFxuXHQjIyMjIG1ha2UgYSBwbG90IHRoYXQgdmlzdWFsaXplcyBhbGwgdGhlIHN0cmF0ZWdpZXM6IG5vdGUgdGhhdCB0cmlhbCB0aW1lIGlzIGRpdmlkZWQgYnkgMTAwMCB0byBnZXQgdGhlIHRpbWUgaW4gc2Vjb25kc1xuXHR3aXRoKGFnclJlc3VsdHNNZWFuRHJpZnQscGxvdChUcmlhbFRpbWUvMTAwMCxhYnMoZGV2KSxwY2g9MjEsYmc9XCJkYXJrIGdyZXlcIixjb2w9XCJkYXJrIGdyZXlcIixsb2c9XCJ4XCIseGxhYj1cIkRpYWwgdGltZSAocylcIix5bGFiPVwiQXZlcmFnZSBMYXRlcmFsIERldmlhdGlvbiAobSlcIikpXG5cdFxuXHRcblx0IyMjIGdpdmUgYSBzdW1tYXJ5IG9mIHRoZSBkYXRhXHRcblx0c3VtbWFyeShhZ3JSZXN1bHRzTWVhbkRyaWZ0JFRyaWFsVGltZSlcblxufVxuXG5cblxucHJpbnQocnVuQWxsU2ltcGxlU3RyYXRlZ2llcygxLCBcIjA3ODU0MzI1Njk4XCIpKVxuYGBgIn0= -->
+<pre class="r"><code>{
+    
+    
+    normalPhoneStructure &lt;- c(1,6)  ### indicate at what digit positions a chunk needs to be retrieved (1st and 6th digit)
+    phoneStringLength &lt;- 11   ### how many digits does the number have?
+    
+
+    ### vectors that will contain output of the simulation. These are later used to create 1 table with all values
+    keypresses &lt;- c()
+    times &lt;- c()
+    deviations &lt;- c()
+    strats &lt;- c()
+    steers &lt;- c()   
+    chunkStrategies &lt;- generateChunkStrategies(phoneStringLength, 5)
+
+    ### iterate through all strategies
+    ## in this simple model we assume that a participant uses a consistent strategy throughout the trial. That is, they only type each time 1 digit, or type 2 digits at a time, or type 3 digits at a time (i.e., all possible ways of 1:phoneStringLength: 1, 2,3,4, ...11)
+    for (chunkStrategyIdx in 1: length(chunkStrategies))
+    {
+        ## quick way of calculating positions to interleave: repeat strategy &amp; multiply with position in vector (e.g., 333*123 = 369 this means: you interleave BEFORE every 3rd digit (333), and there are 3 positions to interleave (1st, 2nd, 3rd, or 123). Therefore you interleave BEFORE digits 3 (3*1), 6 (3*2), and 9 (3*3))
+        
+      str = sprintf(&quot;============ Round: %d&quot;, chunkStrategyIdx)
+      writeLines(str)
+        strategy &lt;- unlist(chunkStrategies[chunkStrategyIdx])
+        cat(strategy)
+        ### remove last digit, as driver does not interleave after typing the last digit (they are done with the trial :-)  )
+        strategy &lt;- strategy[strategy != phoneStringLength]
+        
+
+        locSteerTimeOptions &lt;- steeringTimeOptions
+        if (length(strategy) == 0)
+        {
+            locSteerTimeOptions &lt;- c(0)
+        }
+
+
+
+        ### now run a trial (runOneTrial) for all combinations of how frequently you update the steering when you are steering (locSteerTimeOptions) and for the nuber of simulations that you want to run for each strategy (nrSimulations)
+        for (steerTimes in locSteerTimeOptions)
+        {
+            for (i in 1:nrSimulations)
+            {
+
+                ### run the simulation and store the output in a table
+                locTab &lt;- runOneTrial(strategy, steerTimes,normalPhoneStructure,phoneStringLength,phoneNumber)
+    
+                ##only look at rows where there is a keypress
+                locTab &lt;- locTab[locTab$events == &quot;keypress&quot;,]
+        
+                ### add the relevant data points to variables that are stored in a final table
+                keypresses &lt;- c(keypresses,1:nrow(locTab))
+                times &lt;- c(times,locTab$times)
+                deviations &lt;- c(deviations,locTab$drifts)
+                strats &lt;- c(strats, rep(paste(strategy, collapse = &quot; &quot;), nrow(locTab)))
+                steers &lt;- c(steers,rep(steerTimes,nrow(locTab)))
+        
+            }
+        }#end of for steerTimes 
+
+    }##end of for nr strategies
+    
+    
+    ### now make a new table based on all the data that was collected
+    tableAllSamples &lt;- data.frame(keypresses,times,deviations,strats,steers)
+    tableAllSamples$strats = factor(tableAllSamples$strats)
+    
+    View(tableAllSamples)
+    #### In the table we collected data for multiple simulations per strategy. Now we want to know the average performane of each strategy.
+    #### These aspects are calculated using the &quot;aggregate&quot; function
+    
+    
+    ## calculate average deviation at each keypress (keypresses), for each unique strategy variation (strats and steers)
+    agrResults &lt;- with(tableAllSamples,aggregate(deviations,list(keypresses=keypresses, strats= strats, steers= steers),mean))
+    agrResults$dev &lt;- agrResults$x
+    
+    
+    ### also calculate the time interval
+    agrResults$times &lt;- with(tableAllSamples,aggregate(times,list(keypresses=keypresses, strats= strats, steers= steers),mean))$x
+        
+    
+    ###now calculate mean drift across the trial
+    agrResultsMeanDrift &lt;-  with(agrResults,aggregate(dev,list(strats= strats, steers= steers),mean))
+    agrResultsMeanDrift$dev &lt;- agrResultsMeanDrift$x
+    
+    ### and mean trial time
+    agrResultsMeanDrift$TrialTime &lt;-  with(agrResults[agrResults$keypresses ==11,],aggregate(times,list( strats= strats, steers= steers),mean))$x   
+    
+    
+    #### make a plot that visualizes all the strategies: note that trial time is divided by 1000 to get the time in seconds
+    with(agrResultsMeanDrift,plot(TrialTime/1000,abs(dev),pch=21,bg=&quot;dark grey&quot;,col=&quot;dark grey&quot;,log=&quot;x&quot;,xlab=&quot;Dial time (s)&quot;,ylab=&quot;Average Lateral Deviation (m)&quot;))
+    
+    
+    ### give a summary of the data  
+    summary(agrResultsMeanDrift$TrialTime)
+
+}
+
+
+
+print(runAllSimpleStrategies(1, &quot;07854325698&quot;))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiPT09PT09PT09PT09IFJvdW5kOiAxXG4xIDIgMyA0IDUgNiA3IDggOSAxMCAxMT09PT09PT09PT09PSBSb3VuZDogMlxuPT09PT09PT09PT09IFJvdW5kOiAzXG4xIDQgNz09PT09PT09PT09PSBSb3VuZDogNFxuMSA2PT09PT09PT09PT09IFJvdW5kOiA1XG4zIDQgNz09PT09PT09PT09PSBSb3VuZDogNlxuMSA1IDYgNyA4IDExPT09PT09PT09PT09IFJvdW5kOiA3XG4xIDMgNSA3IDg9PT09PT09PT09PT0gUm91bmQ6IDhcbjEgMyA1IDggOSAxMCAxMT09PT09PT09PT09PSBSb3VuZDogOVxuMSA3IDggMTEgICBNaW4uIDFzdCBRdS4gIE1lZGlhbiAgICBNZWFuIDNyZCBRdS4gICAgTWF4LiBcbiAgIDQ2MDAgICAgOTQwMCAgIDEyMTAwICAgMTQyMDMgICAxNjkwMCAgIDM5NDAwIFxuIn0= -->
+<pre><code>============ Round: 1
+1 2 3 4 5 6 7 8 9 10 11============ Round: 2
+============ Round: 3
+1 4 7============ Round: 4
+1 6============ Round: 5
+3 4 7============ Round: 6
+1 5 6 7 8 11============ Round: 7
+1 3 5 7 8============ Round: 8
+1 3 5 8 9 10 11============ Round: 9
+1 7 8 11   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   4600    9400   12100   14203   16900   39400 </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucnVuQWxsU2ltcGxlU3RyYXRlZ2llcygxLCBcIjA3ODU0MzI1Njk4XCIpXG5gYGAifQ== -->
+<pre class="r"><code>runAllSimpleStrategies(1, &quot;07854325698&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiTlVMTFxuTlVMTFxuIn0= -->
+<pre><code>NULL
+NULL</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpgYGB7cn0NCnNvdXJjZSgiZHJpdmluZ01vZGVsLlIiKQ0KYGBgDQoNCmBgYHtyfQ0KZ2VuZXJhdGVDaHVua1N0cmF0ZWdpZXMgPC0gZnVuY3Rpb24ocGhvbmVOdW1iZXJMZW5ndGhzLCBudW1fc3RyYXRlZ2llcyl7DQogIGFsbF9jaHVua3MgPSAxOnBob25lTnVtYmVyTGVuZ3Rocw0KICBub19jaHVua3MgPSBjKCkNCiAgbmF0dXJhbF91ayA9IGMoMSw2KQ0KICBuYXR1cmFsX3VzID0gYygxLDQsNykNCiAgcmFuZF9jaHVua19zd2l0Y2hfbnVtYmVycyA9IHJiaW5vbSg1LCBwaG9uZU51bWJlckxlbmd0aHMtMSwgMy8xMCkgKyAxDQogIHN0cmF0ZWdpZXMgPSBsaXN0KGFsbF9jaHVua3MsIG5vX2NodW5rcywgbmF0dXJhbF91cywgbmF0dXJhbF91aykNCiAgIyBUT0RPOiBFeGNsdWRlIHJlcGVhdGluZyBzdHJhdGVnaWVzDQogICMgVE9ETzogVXNlIHdoaWxlIHRvIGZpbGwgaXQgdXANCiAgZm9yIChudW1fY2h1bWtzIGluIHJhbmRfY2h1bmtfc3dpdGNoX251bWJlcnMpew0KICAgICMgcHJpbnQoImRkZGRkZGRkZGRkZGRkZGRkZGRkZCIpDQogICAgIyBwcmludChsZW5ndGgoc3RyYXRlZ2llcykpDQogICAgY2h1bmtfcG9zID0gc29ydChzYW1wbGUoMTpwaG9uZU51bWJlckxlbmd0aHMsIHNpemU9bnVtX2NodW1rcywgcmVwbGFjZSA9IEZBTFNFKSkNCiAgICAjIHByaW50KGNodW5rX3BvcykNCiAgICBzdHJhdGVnaWVzW2xlbmd0aChzdHJhdGVnaWVzKSArIDFdIDwtIGxpc3QoY2h1bmtfcG9zKQ0KICB9DQogIHN0cmF0ZWdpZXMNCn0NCg0KcHJpbnQoZ2VuZXJhdGVDaHVua1N0cmF0ZWdpZXMoMTEpKQ0KDQpgYGANCg0KDQpgYGB7cn0NCnJ1bkFsbFNpbXBsZVN0cmF0ZWdpZXMgPC0gZnVuY3Rpb24obnJTaW11bGF0aW9ucyxwaG9uZU51bWJlcikNCnsNCgkNCgkNCglub3JtYWxQaG9uZVN0cnVjdHVyZSA8LSBjKDEsNikgICMjIyBpbmRpY2F0ZSBhdCB3aGF0IGRpZ2l0IHBvc2l0aW9ucyBhIGNodW5rIG5lZWRzIHRvIGJlIHJldHJpZXZlZCAoMXN0IGFuZCA2dGggZGlnaXQpDQoJcGhvbmVTdHJpbmdMZW5ndGggPC0gMTEgICAjIyMgaG93IG1hbnkgZGlnaXRzIGRvZXMgdGhlIG51bWJlciBoYXZlPw0KCQ0KDQoJIyMjIHZlY3RvcnMgdGhhdCB3aWxsIGNvbnRhaW4gb3V0cHV0IG9mIHRoZSBzaW11bGF0aW9uLiBUaGVzZSBhcmUgbGF0ZXIgdXNlZCB0byBjcmVhdGUgMSB0YWJsZSB3aXRoIGFsbCB2YWx1ZXMNCglrZXlwcmVzc2VzIDwtIGMoKQ0KCXRpbWVzIDwtIGMoKQ0KCWRldmlhdGlvbnMgPC0gYygpDQoJc3RyYXRzIDwtIGMoKQ0KCXN0ZWVycyA8LSBjKCkJDQoJY2h1bmtTdHJhdGVnaWVzIDwtIGdlbmVyYXRlQ2h1bmtTdHJhdGVnaWVzKHBob25lU3RyaW5nTGVuZ3RoLCA1KQ0KDQoJIyMjIGl0ZXJhdGUgdGhyb3VnaCBhbGwgc3RyYXRlZ2llcw0KCSMjIGluIHRoaXMgc2ltcGxlIG1vZGVsIHdlIGFzc3VtZSB0aGF0IGEgcGFydGljaXBhbnQgdXNlcyBhIGNvbnNpc3RlbnQgc3RyYXRlZ3kgdGhyb3VnaG91dCB0aGUgdHJpYWwuIFRoYXQgaXMsIHRoZXkgb25seSB0eXBlIGVhY2ggdGltZSAxIGRpZ2l0LCBvciB0eXBlIDIgZGlnaXRzIGF0IGEgdGltZSwgb3IgdHlwZSAzIGRpZ2l0cyBhdCBhIHRpbWUgKGkuZS4sIGFsbCBwb3NzaWJsZSB3YXlzIG9mIDE6cGhvbmVTdHJpbmdMZW5ndGg6IDEsIDIsMyw0LCAuLi4xMSkNCglmb3IgKGNodW5rU3RyYXRlZ3lJZHggaW4gMTogbGVuZ3RoKGNodW5rU3RyYXRlZ2llcykpDQoJew0KCQkjIyBxdWljayB3YXkgb2YgY2FsY3VsYXRpbmcgcG9zaXRpb25zIHRvIGludGVybGVhdmU6IHJlcGVhdCBzdHJhdGVneSAmIG11bHRpcGx5IHdpdGggcG9zaXRpb24gaW4gdmVjdG9yIChlLmcuLCAzMzMqMTIzID0gMzY5IHRoaXMgbWVhbnM6IHlvdSBpbnRlcmxlYXZlIEJFRk9SRSBldmVyeSAzcmQgZGlnaXQgKDMzMyksIGFuZCB0aGVyZSBhcmUgMyBwb3NpdGlvbnMgdG8gaW50ZXJsZWF2ZSAoMXN0LCAybmQsIDNyZCwgb3IgMTIzKS4gVGhlcmVmb3JlIHlvdSBpbnRlcmxlYXZlIEJFRk9SRSBkaWdpdHMgMyAoMyoxKSwgNiAoMyoyKSwgYW5kIDkgKDMqMykpDQoJCQ0KCSAgc3RyID0gc3ByaW50ZigiPT09PT09PT09PT09IFJvdW5kOiAlZCIsIGNodW5rU3RyYXRlZ3lJZHgpDQoJICB3cml0ZUxpbmVzKHN0cikNCgkJc3RyYXRlZ3kgPC0gdW5saXN0KGNodW5rU3RyYXRlZ2llc1tjaHVua1N0cmF0ZWd5SWR4XSkNCgkJY2F0KHN0cmF0ZWd5KQ0KCQkjIyMgcmVtb3ZlIGxhc3QgZGlnaXQsIGFzIGRyaXZlciBkb2VzIG5vdCBpbnRlcmxlYXZlIGFmdGVyIHR5cGluZyB0aGUgbGFzdCBkaWdpdCAodGhleSBhcmUgZG9uZSB3aXRoIHRoZSB0cmlhbCA6LSkgICkNCgkJc3RyYXRlZ3kgPC0gc3RyYXRlZ3lbc3RyYXRlZ3kgIT0gcGhvbmVTdHJpbmdMZW5ndGhdDQoJCQ0KDQoJCWxvY1N0ZWVyVGltZU9wdGlvbnMgPC0gc3RlZXJpbmdUaW1lT3B0aW9ucw0KCQlpZiAobGVuZ3RoKHN0cmF0ZWd5KSA9PSAwKQ0KCQl7DQoJCQlsb2NTdGVlclRpbWVPcHRpb25zIDwtIGMoMCkNCgkJfQ0KDQoNCg0KCQkjIyMgbm93IHJ1biBhIHRyaWFsIChydW5PbmVUcmlhbCkgZm9yIGFsbCBjb21iaW5hdGlvbnMgb2YgaG93IGZyZXF1ZW50bHkgeW91IHVwZGF0ZSB0aGUgc3RlZXJpbmcgd2hlbiB5b3UgYXJlIHN0ZWVyaW5nIChsb2NTdGVlclRpbWVPcHRpb25zKSBhbmQgZm9yIHRoZSBudWJlciBvZiBzaW11bGF0aW9ucyB0aGF0IHlvdSB3YW50IHRvIHJ1biBmb3IgZWFjaCBzdHJhdGVneSAobnJTaW11bGF0aW9ucykNCgkJZm9yIChzdGVlclRpbWVzIGluIGxvY1N0ZWVyVGltZU9wdGlvbnMpDQoJCXsNCgkJCWZvciAoaSBpbiAxOm5yU2ltdWxhdGlvbnMpDQoJCQl7DQoNCgkJCQkjIyMgcnVuIHRoZSBzaW11bGF0aW9uIGFuZCBzdG9yZSB0aGUgb3V0cHV0IGluIGEgdGFibGUNCgkJCQlsb2NUYWIgPC0gcnVuT25lVHJpYWwoc3RyYXRlZ3ksIHN0ZWVyVGltZXMsbm9ybWFsUGhvbmVTdHJ1Y3R1cmUscGhvbmVTdHJpbmdMZW5ndGgscGhvbmVOdW1iZXIpDQoJDQoJCQkJIyNvbmx5IGxvb2sgYXQgcm93cyB3aGVyZSB0aGVyZSBpcyBhIGtleXByZXNzDQoJCQkJbG9jVGFiIDwtIGxvY1RhYltsb2NUYWIkZXZlbnRzID09ICJrZXlwcmVzcyIsXQ0KCQkNCgkJCQkjIyMgYWRkIHRoZSByZWxldmFudCBkYXRhIHBvaW50cyB0byB2YXJpYWJsZXMgdGhhdCBhcmUgc3RvcmVkIGluIGEgZmluYWwgdGFibGUNCgkJCQlrZXlwcmVzc2VzIDwtIGMoa2V5cHJlc3NlcywxOm5yb3cobG9jVGFiKSkNCgkJCQl0aW1lcyA8LSBjKHRpbWVzLGxvY1RhYiR0aW1lcykNCgkJCQlkZXZpYXRpb25zIDwtIGMoZGV2aWF0aW9ucyxsb2NUYWIkZHJpZnRzKQ0KCQkJCXN0cmF0cyA8LSBjKHN0cmF0cywgcmVwKHBhc3RlKHN0cmF0ZWd5LCBjb2xsYXBzZSA9ICIgIiksIG5yb3cobG9jVGFiKSkpDQoJCQkJc3RlZXJzIDwtIGMoc3RlZXJzLHJlcChzdGVlclRpbWVzLG5yb3cobG9jVGFiKSkpDQoJCQ0KCQkJfQ0KCQl9I2VuZCBvZiBmb3Igc3RlZXJUaW1lcwkNCg0KCX0jI2VuZCBvZiBmb3IgbnIgc3RyYXRlZ2llcw0KCQ0KCQ0KCSMjIyBub3cgbWFrZSBhIG5ldyB0YWJsZSBiYXNlZCBvbiBhbGwgdGhlIGRhdGEgdGhhdCB3YXMgY29sbGVjdGVkDQoJdGFibGVBbGxTYW1wbGVzIDwtIGRhdGEuZnJhbWUoa2V5cHJlc3Nlcyx0aW1lcyxkZXZpYXRpb25zLHN0cmF0cyxzdGVlcnMpDQoJdGFibGVBbGxTYW1wbGVzJHN0cmF0cyA9IGZhY3Rvcih0YWJsZUFsbFNhbXBsZXMkc3RyYXRzKQ0KCQ0KCVZpZXcodGFibGVBbGxTYW1wbGVzKQ0KCSMjIyMgSW4gdGhlIHRhYmxlIHdlIGNvbGxlY3RlZCBkYXRhIGZvciBtdWx0aXBsZSBzaW11bGF0aW9ucyBwZXIgc3RyYXRlZ3kuIE5vdyB3ZSB3YW50IHRvIGtub3cgdGhlIGF2ZXJhZ2UgcGVyZm9ybWFuZSBvZiBlYWNoIHN0cmF0ZWd5Lg0KCSMjIyMgVGhlc2UgYXNwZWN0cyBhcmUgY2FsY3VsYXRlZCB1c2luZyB0aGUgImFnZ3JlZ2F0ZSIgZnVuY3Rpb24NCgkNCgkNCgkjIyBjYWxjdWxhdGUgYXZlcmFnZSBkZXZpYXRpb24gYXQgZWFjaCBrZXlwcmVzcyAoa2V5cHJlc3NlcyksIGZvciBlYWNoIHVuaXF1ZSBzdHJhdGVneSB2YXJpYXRpb24gKHN0cmF0cyBhbmQgc3RlZXJzKQ0KCWFnclJlc3VsdHMgPC0gd2l0aCh0YWJsZUFsbFNhbXBsZXMsYWdncmVnYXRlKGRldmlhdGlvbnMsbGlzdChrZXlwcmVzc2VzPWtleXByZXNzZXMsIHN0cmF0cz0gc3RyYXRzLCBzdGVlcnM9IHN0ZWVycyksbWVhbikpDQoJYWdyUmVzdWx0cyRkZXYgPC0gYWdyUmVzdWx0cyR4DQoJDQoJDQoJIyMjIGFsc28gY2FsY3VsYXRlIHRoZSB0aW1lIGludGVydmFsDQoJYWdyUmVzdWx0cyR0aW1lcyA8LSB3aXRoKHRhYmxlQWxsU2FtcGxlcyxhZ2dyZWdhdGUodGltZXMsbGlzdChrZXlwcmVzc2VzPWtleXByZXNzZXMsIHN0cmF0cz0gc3RyYXRzLCBzdGVlcnM9IHN0ZWVycyksbWVhbikpJHgNCgkJDQoJDQoJIyMjbm93IGNhbGN1bGF0ZSBtZWFuIGRyaWZ0IGFjcm9zcyB0aGUgdHJpYWwNCglhZ3JSZXN1bHRzTWVhbkRyaWZ0IDwtICB3aXRoKGFnclJlc3VsdHMsYWdncmVnYXRlKGRldixsaXN0KHN0cmF0cz0gc3RyYXRzLCBzdGVlcnM9IHN0ZWVycyksbWVhbikpDQoJYWdyUmVzdWx0c01lYW5EcmlmdCRkZXYgPC0gYWdyUmVzdWx0c01lYW5EcmlmdCR4DQoJDQoJIyMjIGFuZCBtZWFuIHRyaWFsIHRpbWUNCglhZ3JSZXN1bHRzTWVhbkRyaWZ0JFRyaWFsVGltZSA8LSAgd2l0aChhZ3JSZXN1bHRzW2FnclJlc3VsdHMka2V5cHJlc3NlcyA9PTExLF0sYWdncmVnYXRlKHRpbWVzLGxpc3QoIHN0cmF0cz0gc3RyYXRzLCBzdGVlcnM9IHN0ZWVycyksbWVhbikpJHgJDQoJDQoJDQoJIyMjIyBtYWtlIGEgcGxvdCB0aGF0IHZpc3VhbGl6ZXMgYWxsIHRoZSBzdHJhdGVnaWVzOiBub3RlIHRoYXQgdHJpYWwgdGltZSBpcyBkaXZpZGVkIGJ5IDEwMDAgdG8gZ2V0IHRoZSB0aW1lIGluIHNlY29uZHMNCgl3aXRoKGFnclJlc3VsdHNNZWFuRHJpZnQscGxvdChUcmlhbFRpbWUvMTAwMCxhYnMoZGV2KSxwY2g9MjEsYmc9ImRhcmsgZ3JleSIsY29sPSJkYXJrIGdyZXkiLGxvZz0ieCIseGxhYj0iRGlhbCB0aW1lIChzKSIseWxhYj0iQXZlcmFnZSBMYXRlcmFsIERldmlhdGlvbiAobSkiKSkNCgkNCgkNCgkjIyMgZ2l2ZSBhIHN1bW1hcnkgb2YgdGhlIGRhdGEJDQoJc3VtbWFyeShhZ3JSZXN1bHRzTWVhbkRyaWZ0JFRyaWFsVGltZSkNCg0KfQ0KDQoNCg0KcHJpbnQocnVuQWxsU2ltcGxlU3RyYXRlZ2llcygxLCAiMDc4NTQzMjU2OTgiKSkNCg0KYGBgDQoNCmBgYHtyfQ0KIyBydW5BbGxTaW1wbGVTdHJhdGVnaWVzIDwtIGZ1bmN0aW9uKG5yU2ltdWxhdGlvbnMscGhvbmVOdW1iZXIpDQojIHsNCiMgCQ0KIyAJDQojIAlub3JtYWxQaG9uZVN0cnVjdHVyZSA8LSBjKDEsNikgICMjIyBpbmRpY2F0ZSBhdCB3aGF0IGRpZ2l0IHBvc2l0aW9ucyBhIGNodW5rIG5lZWRzIHRvIGJlIHJldHJpZXZlZCAoMXN0IGFuZCA2dGggZGlnaXQpDQojIAlwaG9uZVN0cmluZ0xlbmd0aCA8LSAxMSAgICMjIyBob3cgbWFueSBkaWdpdHMgZG9lcyB0aGUgbnVtYmVyIGhhdmU/DQojIAkNCiMgDQojIAkjIyMgdmVjdG9ycyB0aGF0IHdpbGwgY29udGFpbiBvdXRwdXQgb2YgdGhlIHNpbXVsYXRpb24uIFRoZXNlIGFyZSBsYXRlciB1c2VkIHRvIGNyZWF0ZSAxIHRhYmxlIHdpdGggYWxsIHZhbHVlcw0KIyAJa2V5cHJlc3NlcyA8LSBjKCkNCiMgCXRpbWVzIDwtIGMoKQ0KIyAJZGV2aWF0aW9ucyA8LSBjKCkNCiMgCXN0cmF0cyA8LSBjKCkNCiMgCXN0ZWVycyA8LSBjKCkNCiMgCWNodW5rU3RyYXRlZ2llcyA8LSBnZW5lcmF0ZUNodW5rU3RyYXRlZ2llcyhwaG9uZVN0cmluZ0xlbmd0aCwgNSkNCiMgDQojICMgCSMjIyBpdGVyYXRlIHRocm91Z2ggYWxsIHN0cmF0ZWdpZXMNCiMgIyAJIyMgaW4gdGhpcyBzaW1wbGUgbW9kZWwgd2UgYXNzdW1lIHRoYXQgYSBwYXJ0aWNpcGFudCB1c2VzIGEgY29uc2lzdGVudCBzdHJhdGVneSB0aHJvdWdob3V0IHRoZSB0cmlhbC4gVGhhdCBpcywgdGhleSBvbmx5IHR5cGUgZWFjaCB0aW1lIDEgZGlnaXQsIG9yIHR5cGUgMiBkaWdpdHMgYXQgYSB0aW1lLCBvciB0eXBlIDMgZGlnaXRzIGF0IGEgdGltZSAoaS5lLiwgYWxsIHBvc3NpYmxlIHdheXMgb2YgMTpwaG9uZVN0cmluZ0xlbmd0aDogMSwgMiwzLDQsIC4uLjExKQ0KIyAJZm9yIChjaHVua1N0cmF0ZWd5SWR4IGluIDE6IGxlbmd0aChjaHVua1N0cmF0ZWdpZXMpKQ0KIyAJew0KIyAJCSMjIHF1aWNrIHdheSBvZiBjYWxjdWxhdGluZyBwb3NpdGlvbnMgdG8gaW50ZXJsZWF2ZTogcmVwZWF0IHN0cmF0ZWd5ICYgbXVsdGlwbHkgd2l0aCBwb3NpdGlvbiBpbiB2ZWN0b3IgKGUuZy4sIDMzMyoxMjMgPSAzNjkgdGhpcyBtZWFuczogeW91IGludGVybGVhdmUgQkVGT1JFIGV2ZXJ5IDNyZCBkaWdpdCAoMzMzKSwgYW5kIHRoZXJlIGFyZSAzIHBvc2l0aW9ucyB0byBpbnRlcmxlYXZlICgxc3QsIDJuZCwgM3JkLCBvciAxMjMpLiBUaGVyZWZvcmUgeW91IGludGVybGVhdmUgQkVGT1JFIGRpZ2l0cyAzICgzKjEpLCA2ICgzKjIpLCBhbmQgOSAoMyozKSkNCiMgDQojIA0KIyAJICBzdHIgPSBzcHJpbnRmKCI9PT09PT09PT09PT0gUm91bmQ6ICVkIiwgbnJEaWdpdHNQZXJUaW1lKQ0KIyAJCXN0cmF0ZWd5IDwtIGNodW5rU3RyYXRlZ2llc1tjaHVua1N0cmF0ZWd5SWR4XQ0KIyAgICAgcHJpbnQoc3RyYXRlZ3kpDQojIA0KIyAJCSMjIyByZW1vdmUgbGFzdCBkaWdpdCwgYXMgZHJpdmVyIGRvZXMgbm90IGludGVybGVhdmUgYWZ0ZXIgdHlwaW5nIHRoZSBsYXN0IGRpZ2l0ICh0aGV5IGFyZSBkb25lIHdpdGggdGhlIHRyaWFsIDotKSAgKQ0KIyAJCXN0cmF0ZWd5IDwtIHN0cmF0ZWd5W3N0cmF0ZWd5ICE9IHBob25lU3RyaW5nTGVuZ3RoXQ0KIyAgICAgcHJpbnQoc3RyYXRlZ3kpDQojIA0KIyAJfQ0KIyAJIyBzdHJhdGVneQ0KIyAJIyBmb3IgKG5yRGlnaXRzUGVyVGltZSBpbiAxOiBwaG9uZVN0cmluZ0xlbmd0aCkNCiMgCSMgew0KIyAJIyAJIyMgcXVpY2sgd2F5IG9mIGNhbGN1bGF0aW5nIHBvc2l0aW9ucyB0byBpbnRlcmxlYXZlOiByZXBlYXQgc3RyYXRlZ3kgJiBtdWx0aXBseSB3aXRoIHBvc2l0aW9uIGluIHZlY3RvciAoZS5nLiwgMzMzKjEyMyA9IDM2OSB0aGlzIG1lYW5zOiB5b3UgaW50ZXJsZWF2ZSBCRUZPUkUgZXZlcnkgM3JkIGRpZ2l0ICgzMzMpLCBhbmQgdGhlcmUgYXJlIDMgcG9zaXRpb25zIHRvIGludGVybGVhdmUgKDFzdCwgMm5kLCAzcmQsIG9yIDEyMykuIFRoZXJlZm9yZSB5b3UgaW50ZXJsZWF2ZSBCRUZPUkUgZGlnaXRzIDMgKDMqMSksIDYgKDMqMiksIGFuZCA5ICgzKjMpKQ0KIyAJIyAJDQojIAkjIAlpZiAobnJEaWdpdHNQZXJUaW1lICE9IDExKQ0KIyAJIyAJew0KIyAJIyAJCXN0cmF0ZWd5IDwtIHJlcChuckRpZ2l0c1BlclRpbWUgLGZsb29yKHBob25lU3RyaW5nTGVuZ3RoL25yRGlnaXRzUGVyVGltZSkpICAjIyMgc3RvcmVzIGF0IHdoaWNoIHBvc2l0aW9ucyB0aGUgbnVtYmVyIGlzIGludGVybGVhdmVkDQojIAkjIAkJcG9zaXRpb25zIDwtIDE6bGVuZ3RoKHN0cmF0ZWd5KQ0KIyAJIyAJCXN0cmF0ZWd5IDwtIHN0cmF0ZWd5ICogcG9zaXRpb25zDQojIAkjIAkgIHByaW50KCI9PT09PT09PT09PT09PT09PT09PT09PT09PT09IikNCiMgCSMgCSAgcHJpbnQoc3RyYXRlZ3kpDQojIAkjIAkJIyMjIHJlbW92ZSBsYXN0IGRpZ2l0LCBhcyBkcml2ZXIgZG9lcyBub3QgaW50ZXJsZWF2ZSBhZnRlciB0eXBpbmcgdGhlIGxhc3QgZGlnaXQgKHRoZXkgYXJlIGRvbmUgd2l0aCB0aGUgdHJpYWwgOi0pICApDQojIAkjIAkJc3RyYXRlZ3kgPC0gc3RyYXRlZ3lbc3RyYXRlZ3kgIT0gcGhvbmVTdHJpbmdMZW5ndGhdDQojIAkjIAl9DQojIAkjIAllbHNlDQojIAkjIAl7DQojIAkjIAkJc3RyYXRlZ3kgPC0gYygpCQ0KIyAJIyAJCQ0KIyAJIyAJfQ0KIyAJIyAJDQojIAkjIA0KIyAJIyAJbG9jU3RlZXJUaW1lT3B0aW9ucyA8LSBzdGVlcmluZ1RpbWVPcHRpb25zDQojIAkjIAlpZiAobGVuZ3RoKHN0cmF0ZWd5KSA9PSAwKQ0KIyAJIyAJew0KIyAJIyAJCWxvY1N0ZWVyVGltZU9wdGlvbnMgPC0gYygwKQ0KIyAJIyAJfQ0KIyAJIyANCiMgCSMgDQojIAkjIA0KIyAJIyB9IyNlbmQgb2YgZm9yIG5yIHN0cmF0ZWdpZXMNCiMgfQ0KYGBgDQoNCg0KDQo=</div>
 
 
 
@@ -1885,7 +2001,7 @@ $(document).ready(function () {
 <!-- code folding -->
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("question4.Rmd");
+  window.initializeSourceEmbed("bonus0.Rmd");
   window.initializeCodeFolding("show" === "show");
 });
 </script>

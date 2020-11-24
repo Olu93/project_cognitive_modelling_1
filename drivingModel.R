@@ -248,7 +248,7 @@ runAllSimpleStrategies <- function(nrSimulations,phoneNumber)
 	
 	### now make a new table based on all the data that was collected
 	tableAllSamples <- data.frame(keypresses,times,deviations,strats,steers)
-	
+	View(tableAllSamples)
 	
 	#### In the table we collected data for multiple simulations per strategy. Now we want to know the average performane of each strategy.
 	#### These aspects are calculated using the "aggregate" function
@@ -436,12 +436,6 @@ updateSteering <- function(velocity,nrUpdates,startPosLane)
 }
 
 
-###
-# runAllSimpleStrategies(1, "07854325698")
-# runAllSimpleStrategies(5, "07854325698")
-# runAllSimpleStrategies(10, "07854325698")
-# runAllSimpleStrategies(50, "07854325698")
-# runAllSimpleStrategies(100, "07854325698")
-runAllSimpleStrategies(200, "07854325698")
+print(runAllSimpleStrategies(1, "07854325698"))
 
 

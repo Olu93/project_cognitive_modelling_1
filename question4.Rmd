@@ -45,6 +45,12 @@ filtered_data = keyPressDataWithLaneDeviation %>% filter(partOfExperiment == "si
 compute_estimator(filtered_data)
 ```
 ```{r}
-
+source("drivingModel.R")
+runAllSimpleStrategies(1, "07854325698")
+runAllSimpleStrategies(5, "07854325698")
+runAllSimpleStrategies(10, "07854325698")
+runAllSimpleStrategies(50, "07854325698")
+runAllSimpleStrategies(100, "07854325698")
+runAllSimpleStrategies(200, "07854325698")
 ```
 
