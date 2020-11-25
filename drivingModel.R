@@ -292,18 +292,15 @@ runAllSimpleStrategies <- function(nrSimulations,phoneNumber)
 ### function that generates the points at which car data should be collected (specifically: if you know that a keypress happens after a specific time, then find out at what points a drift update occurs, this depends on the ength of "timeStepPerDriftUpdate" (50 msec by default))	
 updateTimestampslist <- function(timestampsList, totalTime)
 {
-	lastTime <- timestampsList[length(timestampsList)]
+  lastTime <- timestampsList[length(timestampsList)]
 	newTimes <- cumsum(c(lastTime,rep(timeStepPerDriftUpdate ,trunc(totalTime/timeStepPerDriftUpdate))))[-1]
-		
 	timestampsList <- c(timestampsList, newTimes)
-		
 	if (totalTime%%timeStepPerDriftUpdate > 0)
 	{
 		newTime <- timestampsList[length(timestampsList)] + totalTime%%timeStepPerDriftUpdate
 		timestampsList <- c(timestampsList, newTime)
 	}
 	timestampsList
-	
 }
 	
 	
@@ -323,21 +320,31 @@ calculateLaneDrift <- function(startPositionOfDrift, startVelocityOfDrift, drift
 	
 	lastLaneDrift <- startPositionOfDrift
 	
-	
-	for (i in 1:(trunc(driftTimeInMilliSeconds/timeStepPerDriftUpdate)))
-	{
-		locVelocity <- locVelocity + rnorm(1,gaussDeviateMean,gaussDeviateSD)
-		
-		### make sure velocity is not higher than max
-		locVelocity <- velocityCheck(locVelocity)
-				
-		lastLaneDrift <- lastLaneDrift + locVelocity* timeStepPerDriftUpdate / 1000     #velocity is in m/second
-				
-		
-		
-		#laneDriftList <- c(laneDriftList, lastLaneDrift)
-		laneDriftList <- c(laneDriftList, abs(lastLaneDrift))    ### only absolute values
-		
+	num_updates = trunc(driftTimeInMilliSeconds/timeStepPerDriftUpdate)
+	# Bugfix OLu: This was pretty nasty to figure out
+	# Bug description:
+	#   Condition: Bug occurs if keys are occasionally pressed faster than timeStepPerDriftUpdate
+	#   Explanation: This leads to inconsistencies between the number of rows updateTimestampslist & calculateLaneDrift return. 
+	#     Especially, if trunc(driftTimeInMilliSeconds/timeStepPerDriftUpdate) == 0, because R interprests a for loop from 1:0 as "descending-loop"
+	# Solution 1: Use ceiling(driftTimeInMilliSeconds/timeStepPerDriftUpdate) consistently throughout this file
+	# Solution 2: Handle the case totalTime < timeStepPerDriftUpdate in function updateTimestampslist
+	# Solution 3 (quick-fix applied below): laneDriftList update if trunc(driftTimeInMilliSeconds/timeStepPerDriftUpdate) == 0 
+	if(num_updates > 0){
+	  for (i in 1:(num_updates))
+	  {
+	    locVelocity <- locVelocity + rnorm(1,gaussDeviateMean,gaussDeviateSD)
+	    
+	    ### make sure velocity is not higher than max
+	    locVelocity <- velocityCheck(locVelocity)
+	    
+	    lastLaneDrift <- lastLaneDrift + locVelocity* timeStepPerDriftUpdate / 1000     #velocity is in m/second
+	    
+	    
+	    
+	    #laneDriftList <- c(laneDriftList, lastLaneDrift)
+	    laneDriftList <- c(laneDriftList, abs(lastLaneDrift))    ### only absolute values
+	    
+	  }
 	}
 	
 
@@ -347,7 +354,7 @@ calculateLaneDrift <- function(startPositionOfDrift, startVelocityOfDrift, drift
 	### make sure velocity is not higher than max
 	locVelocity <- velocityCheck(locVelocity)
 	
-	if (driftTimeInMilliSeconds%% timeStepPerDriftUpdate > 0)
+	if (driftTimeInMilliSeconds %% timeStepPerDriftUpdate > 0)
 	{
 	
 		lastLaneDrift <- lastLaneDrift + locVelocity*(driftTimeInMilliSeconds%% timeStepPerDriftUpdate)/1000

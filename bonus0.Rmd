@@ -239,14 +239,8 @@ buildRunOneTrial <- function(singleTaskKeyPressTimes, singleTaskKeyPressData = N
   	dialTimes <- singleTaskKeyPressTimes  ##if there is no interleaving, this is the single-task interkeypress interval time
   	# print(singleTaskKeyPressData)
   	if(!is.null(singleTaskKeyPressData)){
-  	  dialTimes = 1:phoneStringLength
-  	  numberstring_split <- as.integer(strsplit(phoneNumber, "")[[1]])
-      for (pos in dialTimes) {
-  	    tmp_line <- singleTaskKeyPressData[pos,]
-  	    tmp_mean <- tmp_line$meanDiffs
-  	    tmp_std <- tmp_line$stdDiffs
-        dialTimes[pos] <- abs(round(rnorm(n=1, tmp_mean, tmp_std)))
-      }
+  	  dialTimes = round(rnorm(singleTaskKeyPressData$meanDiffs, singleTaskKeyPressData$stdDiffs))
+  	  
   	  # print("NEW TRIAL AVERAGE")
   	}
   	  print(paste(sprintf("L-%d:", length(dialTimes)), paste(dialTimes, collapse = " ")))
@@ -262,13 +256,18 @@ buildRunOneTrial <- function(singleTaskKeyPressTimes, singleTaskKeyPressData = N
   	### now go through the various numbers
   	for (digitindex in 1:length(dialTimes))
   	{
+  	  print(paste("----------------------------------------- ROUND", digitindex, "---------------------------------------------------------"))
   
   		### determine dial time, so additional costs can be added later
   		locDialTime <- dialTimes[digitindex]
   			
+  		print("BEGIN")
+  		print(locDialTime)
+  		print("BEGIN-END")
   			
-  		if (length(which(strategy== digitindex)))  ### if this is a position where you switch, then switch
+  		if (length(which(strategy==digitindex)))  ### if this is a position where you switch, then switch
   		{
+  		  print("SWITCH")
   			## experience switch cost
   			time <- switchCost          
   			#switching between dialing & driving
@@ -309,35 +308,48 @@ buildRunOneTrial <- function(singleTaskKeyPressTimes, singleTaskKeyPressData = N
   			
   			
   			
+  		  print("SWITCH-END")
   		}
   	
+  		print("NORMAL")
   		##now calculate drift for typing a digit (NOTE: this is always done for every digit that is typed, regardless of whether you were retrieving a chunk or not)
+  		
   		time <- locDialTime
   		times <- updateTimestampslist(times, time)
   		driftOutput <- calculateLaneDrift(drifts[length(drifts)], newVelocity, time)
   		newVelocity <- driftOutput[1]
+  		prevD = length(drifts)
   		drifts <- c(drifts,driftOutput[2:length(driftOutput)])
+  		print(paste(prevD, "------>", length(drifts)))
   		events <- c(events,rep("none",(length(driftOutput)-2)))
   		events <- c(events,"keypress")
   		
+  		print("NORMAL-END")
   
   		
   	}  #end for digit index
-    print(strategy)
-    print(phoneStringLength)
-    print(phoneNumber)
     # print(singleTaskKeyPressData)
     print(paste(length(times), length(events), length(drifts)))
-  	
+  	# if (length(times) != length(events)) {
+      # print(time)
+      # print(phoneStringLength)
+      # print(phoneNumber)
+      # print(times)
+      # print(events)
+      # print(drifts)
+  	  
+  	# }
   	table <- data.frame(times,events,drifts)
   	
   	#with(table[table$events == "keypress",],plot(times,drifts,ylim=c(-2,2)))
   
-  	table ### return the table
+  	table ### return the table#
   
   }
   runOneTrial
 }
+
+
 
 strPhoneNr = "07854325698"
 num_sim = 1
@@ -348,17 +360,22 @@ runOneTrialFastest <- buildRunOneTrial(rep(round(typing_speed_fastest$val), ncha
 runOneTrialAverage <- buildRunOneTrial(rep(round(typing_speed_average$val), nchar(strPhoneNr)))
 runOneTrialVariableKeypress <- buildRunOneTrial(typing_speed_average_per_digit$meanDiffs, typing_speed_average_per_digit)
 
+
+source("drivingModel.R")
+capture.output(runOneTrialFastest(c(2, 4, 6, 8, 10), 1, c(1,6), 11, strPhoneNr), file = "misc/fastest.txt")
+capture.output(runOneTrialStandrd(c(2, 4, 6, 8, 10), 1, c(1,6), 11, strPhoneNr), file = "misc/std.txt")
+capture.output(runOneTrialVariableKeypress(c(2, 4, 6, 8, 10), 1, c(1,6), 11, strPhoneNr), file = "misc/variable.txt")
 # View(generateChunkStrategiesModelbased(11))
 # generateChunkStrategiesModelbased(11)
 # View(generateChunkStrategiesSystematic(11))
 # generateChunkStrategiesSystematic(11)
 
-sim_data_var_kp <- runAllComplexStrategies(num_sim, strPhoneNr, generateChunkStrategiesSystematic, runOneTrialVariableKeypress)
-sim_data_system <- runAllComplexStrategies(num_sim, strPhoneNr, generateChunkStrategiesSystematic, runOneTrialStandrd)
-sim_data_Fastest <- runAllComplexStrategies(num_sim, strPhoneNr, generateChunkStrategiesSystematic, runOneTrialFastest)
-sim_data_Slowest <- runAllComplexStrategies(num_sim, strPhoneNr, generateChunkStrategiesSystematic, runOneTrialSlowest)
-sim_data_Average <- runAllComplexStrategies(num_sim, strPhoneNr, generateChunkStrategiesSystematic, runOneTrialAverage)
-sim_data_specifics <- runAllComplexStrategies(num_sim, strPhoneNr, generateChunkStrategiesSpecifics, runOneTrialStandrd)
+# sim_data_var_kp <- runAllComplexStrategies(num_sim, strPhoneNr, generateChunkStrategiesSystematic, runOneTrialVariableKeypress)
+# sim_data_system <- runAllComplexStrategies(num_sim, strPhoneNr, generateChunkStrategiesSystematic, runOneTrialStandrd)
+# sim_data_Fastest <- runAllComplexStrategies(num_sim, strPhoneNr, generateChunkStrategiesSystematic, runOneTrialFastest)
+# sim_data_Slowest <- runAllComplexStrategies(num_sim, strPhoneNr, generateChunkStrategiesSystematic, runOneTrialSlowest)
+# sim_data_Average <- runAllComplexStrategies(num_sim, strPhoneNr, generateChunkStrategiesSystematic, runOneTrialAverage)
+# sim_data_specifics <- runAllComplexStrategies(num_sim, strPhoneNr, generateChunkStrategiesSpecifics, runOneTrialStandrd)
 
 ```
 
@@ -429,5 +446,85 @@ sim_data_specifics <- runAllComplexStrategies(num_sim, strPhoneNr, generateChunk
 # }
 ```
 
+```{r}
+# updateTimestampslist <- function(timestampsList, totalTime)
+# {
+# 	prevL = length(timestampsList)
+# 	separator = "---->"
+#   lastTime <- timestampsList[length(timestampsList)]
+# 	newTimes <- cumsum(c(lastTime,rep(timeStepPerDriftUpdate ,trunc(totalTime/timeStepPerDriftUpdate))))[-1]
+# 	# print(totalTime)
+# 	# print(timeStepPerDriftUpdate)
+# 	print(totalTime/timeStepPerDriftUpdate)
+# 	print(trunc(totalTime/timeStepPerDriftUpdate))
+# 	
+# 
+# 	timestampsList <- c(timestampsList, newTimes)
+# 	nextL = length(timestampsList)
+# 
+# 	if (totalTime%%timeStepPerDriftUpdate > 0)
+# 	{
+# 		newTime <- timestampsList[length(timestampsList)] + totalTime%%timeStepPerDriftUpdate
+# 		timestampsList <- c(timestampsList, newTime)
+# 	}
+# 	print(paste(prevL, separator, nextL , separator, length(timestampsList)))
+# 	timestampsList
+# 	
+# }
+# 
+# 
+# calculateLaneDrift <- function(startPositionOfDrift, startVelocityOfDrift, driftTimeInMilliSeconds)
+# {
+# 	laneDriftList <- c()  ### keep a list of lane positions
+# 	#locVelocity <- velocity	#velocity is a global variable
+# 	
+# 	locVelocity <- startVelocityOfDrift
+# 	
+# 	lastLaneDrift <- startPositionOfDrift
+# 	
+#   num_updates = trunc(driftTimeInMilliSeconds/timeStepPerDriftUpdate)
+#   # Bugfix OLu: This was pretty nasty to figure out
+#   if(num_updates > 0){
+#     for (i in 1:(num_updates))
+#   	{
+#   		locVelocity <- locVelocity + rnorm(1,gaussDeviateMean,gaussDeviateSD)
+#   		
+#   		### make sure velocity is not higher than max
+#   		locVelocity <- velocityCheck(locVelocity)
+#   				
+#   		lastLaneDrift <- lastLaneDrift + locVelocity* timeStepPerDriftUpdate / 1000     #velocity is in m/second
+#   				
+#   		
+#   		
+#   		#laneDriftList <- c(laneDriftList, lastLaneDrift)
+#   		laneDriftList <- c(laneDriftList, abs(lastLaneDrift))    ### only absolute values
+#   		
+# 	  }
+#   }
+# 	
+# 
+# 	
+# 	#now do drift for last few milliseconds (using modulo function)
+# 	locVelocity <-locVelocity + rnorm(1,gaussDeviateMean,gaussDeviateSD)
+# 	### make sure velocity is not higher than max
+# 	locVelocity <- velocityCheck(locVelocity)
+# 	
+# 	if (driftTimeInMilliSeconds %% timeStepPerDriftUpdate > 0)
+# 	{
+# 	
+# 		lastLaneDrift <- lastLaneDrift + locVelocity*(driftTimeInMilliSeconds%% timeStepPerDriftUpdate)/1000
+# 		
+# 		
+# 		#laneDriftList <- c(laneDriftList, lastLaneDrift)
+# 		laneDriftList <- c(laneDriftList, abs(lastLaneDrift))  ### only absolute values
+# 		
+# 	}
+# 	#velocity <<- locVelocity
+# 	#laneDrift
+# 
+# 	returnValues <- c(locVelocity, laneDriftList) 
+# 	returnValues
+# }
+```
 
 

@@ -1,0 +1,8 @@
+tmp = runOneTrialStandrd(c(2, 4, 6, 8, 10), 1, c(1,6), 11, strPhoneNr)
+View(runOneTrialVariableKeypress(c(2, 4, 6, 8, 10), 1, c(1,6), 11, strPhoneNr))
+tmp = runOneTrialFastest(c(2, 4, 6, 8, 10), 1, c(1,6), 11, strPhoneNr)
+
+source("drivingModel.R")
+capture.output(runOneTrialFastest(c(2, 4, 6, 8, 10), 1, c(1,6), 11, strPhoneNr), file = "misc/fastest.txt")
+capture.output(runOneTrialStandrd(c(2, 4, 6, 8, 10), 1, c(1,6), 11, strPhoneNr), file = "misc/std.txt")
+capture.output(runOneTrialVariableKeypress(c(2, 4, 6, 8, 10), 1, c(1,6), 11, strPhoneNr), file = "misc/variable.txt")
