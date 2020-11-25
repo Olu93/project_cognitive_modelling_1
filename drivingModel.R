@@ -436,6 +436,6 @@ updateSteering <- function(velocity,nrUpdates,startPosLane)
 }
 
 
-print(runAllSimpleStrategies(1, "07854325698"))
+# print(runAllSimpleStrategies(1, "07854325698"))
 
 
